@@ -21,7 +21,7 @@ import JavaScriptCore
     var statusText: String? { get }
     var timeout: Int { get set }
     //var upload: XMLHttpRequestUpload { get }
-    var withCredentials: Bool { get }
+    var withCredentials: Bool { get set }
     //
     init()
     func abort() -> Void
@@ -29,7 +29,8 @@ import JavaScriptCore
     func getResponseHeader(_ name: String!) -> String?
     func open(_ method: String!, _ url: String!, _ async: Bool, _ user: String?, _ password: String?) -> Void
     func overrideMimeType(_ mimetype: String!) -> Void
-    func send(_ body: String?) -> Void
+    //func send(_ body: String?) -> Void
+    func send(_ body: JSValue?) -> Void
     func setRequestHeader(_ header: String!, _ value: String!) -> Void
     // Events
     var onreadystatechange: EventListener? { get set }
@@ -40,7 +41,11 @@ import JavaScriptCore
 
 @objc public class XMLHTTPRequest: NSObject, XMLHTTPRequestJSProtocol {
     
-    public var readyState: XMLHTTPRequestReadyState = .UNSENT // read-only
+    public var readyState: XMLHTTPRequestReadyState = .UNSENT { // read-only
+        didSet {
+            onreadystatechange?()
+        }
+    }
     
     public var response: Any?
     public var responseText: String?
@@ -55,10 +60,26 @@ import JavaScriptCore
     
     //public var upload: XMLHttpRequestUpload // read-only
     
-    public var withCredentials: Bool = false // read-only
+    public var withCredentials: Bool = false
+    //public var withCredentials: Bool { return (_user != nil && _password != nil) } // read-only
+    
+    // MARK: Internal Variables
+    //private var _urlSession: URLSession = URLSession.shared
+    private lazy var _urlSession: URLSession = {
+        return URLSession(configuration: /*.default*/.ephemeral, delegate: self, delegateQueue: nil)
+        //return URLSession(configuration: .background(withIdentifier: "JavaScriptCoreBrowserObjectModel.XMLHTTPRequest"), delegate: self, delegateQueue: nil)
+    }()
+    private var _requestHeaders = [String: String]()
+    private var _responseHeaders = [String: String]()
+    private var _async: Bool = true
+    private var _user: String?
+    private var _password: String?
+    
+    private var _request: URLRequest?
+    private var _dataTask: URLSessionDataTask?
     
     public override required init() {
-        print("XMLHTTPRequest init()")
+        super.init()
     }
     
     public func abort() -> Void {
@@ -80,33 +101,65 @@ import JavaScriptCore
         return nil
     }
     
-    public func open(_ method: String!, _ url: String!) -> Void {
-        return open(method, url, true, nil, nil)
-    }
-    public func open(_ method: String!, _ url: String!, _ async: Bool = true) -> Void {
-        return open(method, url, async, nil, nil)
-    }
-    public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?) -> Void {
-        return open(method, url, async, user, nil)
-    }
-    public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?, _ password: String?) -> Void {
+    //public func open(_ method: String!, _ url: String!) -> Void {
+    //    return open(method, url, true, nil, nil)
+    //}
+    //public func open(_ method: String!, _ url: String!, _ async: Bool = true) -> Void {
+    //    return open(method, url, async, nil, nil)
+    //}
+    //public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?) -> Void {
+    //    return open(method, url, async, user, nil)
+    //}
+    public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String? = nil, _ password: String? = nil) -> Void {
         print("XMLHTTPRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
+        
+        _request = URLRequest(url: URL(string: url)!)
+        //_request = URLRequest(url: URL(string: url)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(timeout))
+        _request!.httpMethod = method
+        _async = async
+        _user = user
+        _password = password
+        
+        readyState = .OPENED
+        
     }
     
     public func overrideMimeType(_ mimetype: String!) -> Void {
         print("XMLHTTPRequest overrideMimeType( mimetype: \(mimetype) )")
     }
     
-    public func send(_ body: String?) -> Void {
+    //public func send(_ body: String?) -> Void {
+    public func send(_ body: JSValue?) -> Void {
         print("XMLHTTPRequest send( \(String(describing: body)) )")
+        
+        for (header, value) in _requestHeaders {
+            _request!.setValue(value, forHTTPHeaderField: header)
+        }
+        //_request!.timeoutInterval = TimeInterval(timeout)
+        if body != nil && body!.isString {
+            _request!.httpBody = body!.toString().data(using: .utf8)
+        }
+        
+        let dataTask = _urlSession.dataTask(with: _request!) /*{ (data, response, error) in
+            print("_dataTask callback!!!")
+            self.readyState = .DONE
+        }*/
+        dataTask.resume()
+        _dataTask = dataTask
+        
+        readyState = .OPENED
+        //readyState = .HEADERS_RECEIVED
+        
     }
     
     public func setRequestHeader(_ header: String!, _ value: String!) -> Void {
         print("XMLHTTPRequest setRequestHeader( header: \(header), value: \(value) )")
+        //_request.setValue(value, forHTTPHeaderField: header)
+        _requestHeaders[header] = value
     }
     
     //
-    // MARK: - EventTarget
+    // MARK: - EventTarget -
     //
     
     public func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
@@ -116,15 +169,14 @@ import JavaScriptCore
     public func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
         print("XMLHTTPRequest removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
     }
-    
+
     public func dispatchEvent(event: Event!) -> Bool {
         print("XMLHTTPRequest dispatchEvent( \(event) )")
-        
         return true
     }
     
     //
-    // MARK: - XMLHttpRequestEventTarget
+    // MARK: - XMLHttpRequestEventTarget -
     //
     
     public var onabort: EventListener?
@@ -136,10 +188,23 @@ import JavaScriptCore
     public var onloadend: EventListener?
     
     //
-    // MARK: - Events
+    // MARK: - Events -
     //
     
     public var onreadystatechange: EventListener?
+    // TODO: investigate the need for this:
+    //public var onreadystatechange: EventListener? {
+    //    willSet {
+    //        if self.onreadystatechange != nil, let context = JSContext.current() {
+    //            context.virtualMachine.removeManagedReference(self.onreadystatechange!, withOwner: self)
+    //        }
+    //    }
+    //    didSet {
+    //        if self.onreadystatechange != nil, let context = JSContext.current() {
+    //            context.virtualMachine.addManagedReference(self.onreadystatechange!, withOwner: self)
+    //        }
+    //    }
+    //}
     
 }
 
@@ -216,6 +281,98 @@ public typealias XMLHTTPRequestStatus = Int
         default:
             self = .none
         }
+    }
+    
+}
+
+
+
+
+
+
+
+// MARK: URLSessionDelegate
+
+extension XMLHTTPRequest: URLSessionDelegate {
+    
+    public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        print("XMLHTTPRequest urlSession( session: \(session), didBecomeInvalidWithError: \(String(describing: error)) )")
+    }
+    
+    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: \(session), didReceive: \(challenge), completionHandler: \(completionHandler) )")
+    }
+    
+    public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        print("XMLHTTPRequest urlSessionDidFinishEvents( forBackgroundURLSession: \(session) )")
+    }
+    
+}
+
+// MARK: URLSessionTaskDelegate
+
+extension XMLHTTPRequest: URLSessionTaskDelegate {
+    
+    @available(iOS 11.0, *)
+    public func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest request: URLRequest, completionHandler: @escaping (URLSession.DelayedRequestDisposition, URLRequest?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), willBeginDelayedRequest: \(request), completionHandler: \(completionHandler) )")
+    }
+    
+    @available(iOS 11.0, *)
+    public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
+        print("XMLHTTPRequest urlSession( session: URLSession, taskIsWaitingForConnectivity: \(task) )")
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), willPerformHTTPRedirection: \(response), newRequest: \(request), completionHandler: \(completionHandler) )")
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), didReceive: \(challenge), completionHandler: \(completionHandler) )")
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), needNewBodyStream completionHandler: \(completionHandler) )")
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), didSendBodyData bytesSent: \(bytesSent), totalBytesSent: \(totalBytesSent), totalBytesExpectedToSend: \(totalBytesExpectedToSend) )")
+    }
+    
+    @available(iOS 10.0, *)
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), didFinishCollecting metrics: \(metrics) )")
+    }
+    
+    public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        print("XMLHTTPRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
+    }
+    
+}
+
+// MARK: URLSessionDataDelegate
+
+extension XMLHTTPRequest: URLSessionDataDelegate {
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(completionHandler) )")
+    }
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask) {
+        print("XMLHTTPRequest urlSession( session: URLSession, dataTask: \(dataTask), didBecome downloadTask: \(downloadTask) )")
+    }
+    
+    @available(iOS 9.0, *)
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
+        print("XMLHTTPRequest urlSession( session: URLSession, dataTask: \(dataTask), didBecome streamTask: \(streamTask) )")
+    }
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        print("XMLHTTPRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
+    }
+    
+    public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Swift.Void) {
+        print("XMLHTTPRequest urlSession( session: URLSession, dataTask: \(dataTask), willCacheResponse: \(proposedResponse), completionHandler: \(completionHandler) )")
     }
     
 }
