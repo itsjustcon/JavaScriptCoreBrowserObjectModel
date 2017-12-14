@@ -19,24 +19,66 @@ import JavaScriptCore
 
 @objc class Console: NSObject, ConsoleProtocol {
     
-    public class func debug(_ message: String) -> Void {
+    static var `default` = {
+        return Console()
+    }()
+    
+    //private var stdout: TextOutputStream = StdOutStream()
+    //private var stderr: TextOutputStream = StdOutStream()
+    
+    init(stdout: TextOutputStream? = nil, stderr: TextOutputStream? = nil) {
+        super.init()
+        //self.stdout = stdout ?? StdOutStream()
+        //self.stderr = stderr ?? self.stdout
+    }
+    
+    public func debug(_ message: String) -> Void {
         print(String(message))
     }
     
-    public class func error(_ message: String) -> Void {
+    public func error(_ message: String) -> Void {
         print(String(message))
     }
     
-    public class func info(_ message: String) -> Void {
+    public func info(_ message: String) -> Void {
         print(String(message))
     }
     
-    public class func log(_ message: String) -> Void {
+    public func log(_ message: String) -> Void {
         print(String(message))
     }
     
-    public class func warn(_ message: String) -> Void {
+    public func warn(_ message: String) -> Void {
         print(String(message))
     }
     
 }
+
+// MARK: Static Methods
+
+extension Console {
+    public class func debug(_ message: String) -> Void {
+        self.default.debug(message)
+    }
+    public class func error(_ message: String) -> Void {
+        self.default.error(message)
+    }
+    public class func info(_ message: String) -> Void {
+        self.default.info(message)
+    }
+    public class func log(_ message: String) -> Void {
+        self.default.log(message)
+    }
+    public class func warn(_ message: String) -> Void {
+        self.default.warn(message)
+    }
+}
+
+
+
+//fileprivate struct StdOutStream: TextOutputStream {
+//    mutating func write(_ string: String) {
+//        print(string)
+//    }
+//}
+
