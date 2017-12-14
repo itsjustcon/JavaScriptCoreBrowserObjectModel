@@ -101,10 +101,19 @@ req.send();
         context.evaluateScript("var req = new XMLHTTPRequest();")
         let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
         
+        let expectations: [XMLHTTPRequestReadyState: XCTestExpectation] = [
+            //.UNSENT: XCTestExpectation(description: "XMLHTTPRequestReadyState.UNSENT"),
+            .OPENED: XCTestExpectation(description: "XMLHTTPRequestReadyState.OPENED"),
+            .HEADERS_RECEIVED: XCTestExpectation(description: "XMLHTTPRequestReadyState.HEADERS_RECEIVED"),
+            .LOADING: XCTestExpectation(description: "XMLHTTPRequestReadyState.LOADING"),
+            .DONE: XCTestExpectation(description: "XMLHTTPRequestReadyState.DONE"),
+        ]
+        
         let onreadystatechangeExpectation = XCTestExpectation(description: "Invoke req.onreadystatechange")
         let onreadystatechange: EventListener = {
-            print("onreadystatechange()")
+            //print("onreadystatechange() \(req.readyState.rawValue)")
             onreadystatechangeExpectation.fulfill()
+            expectations[req.readyState]?.fulfill()
         }
         //let onreadystatechange: EventListener = { onreadystatechangeExpectation.fulfill() }
         req.onreadystatechange = onreadystatechange
@@ -114,11 +123,11 @@ req.send();
         
         let receivedRequestExpectation = webServer.expect(path: "/")
         
-        //context.evaluateScript("req.open('GET', 'https://google.com', true);")
         context.evaluateScript("req.open('GET', '\(webServer.serverURL!.absoluteString)', true);")
         context.evaluateScript("req.send();")
         
         wait(for: [ onreadystatechangeExpectation, receivedRequestExpectation ], timeout: 1)
+        //wait(for: [ expectations[.OPENED]!, expectations[.HEADERS_RECEIVED]!, expectations[.LOADING]!, expectations[.DONE]! ], timeout: 1, enforceOrder: true)
     }
     
 }
