@@ -34,7 +34,6 @@ import JavaScriptCore
     // Events
     var onreadystatechange: EventListener? { get set }
 }
-
 //extension XMLHTTPRequestJSProtocol {
 //    var responseType: XMLHTTPRequestResponseType { get }
 //}
@@ -74,23 +73,21 @@ import JavaScriptCore
         print("XMLHTTPRequest getAllResponseHeaders()")
         
         return nil
-        
     }
     public func getResponseHeader(_ name: String!) -> String? {
         print("XMLHTTPRequest getResponseHeader( name: \(name) )")
         
         return nil
-        
     }
     
     public func open(_ method: String!, _ url: String!) -> Void {
-        return self.open(method, url, true, nil, nil)
+        return open(method, url, true, nil, nil)
     }
     public func open(_ method: String!, _ url: String!, _ async: Bool = true) -> Void {
-        return self.open(method, url, async, nil, nil)
+        return open(method, url, async, nil, nil)
     }
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?) -> Void {
-        return self.open(method, url, async, user, nil)
+        return open(method, url, async, user, nil)
     }
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?, _ password: String?) -> Void {
         print("XMLHTTPRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
@@ -113,18 +110,17 @@ import JavaScriptCore
     //
     
     public func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("XMLHTTPRequest addEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(String(describing: useCapture)) )")
+        print("XMLHTTPRequest addEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
     }
     
     public func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("XMLHTTPRequest removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(String(describing: useCapture)) )")
+        print("XMLHTTPRequest removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
     }
     
     public func dispatchEvent(event: Event!) -> Bool {
         print("XMLHTTPRequest dispatchEvent( \(event) )")
         
         return true
-        
     }
     
     //

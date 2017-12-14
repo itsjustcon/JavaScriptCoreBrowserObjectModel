@@ -14,6 +14,7 @@ import XCTest
 class XMLHTTPRequestTests: XCTestCase {
     
     static var webServer = TestWebServer()
+    var webServer: TestWebServer { return XMLHTTPRequestTests.webServer }
     
     override class func setUp() {
         super.setUp()
@@ -34,11 +35,10 @@ class XMLHTTPRequestTests: XCTestCase {
     }
     */
     
-    var webServer: TestWebServer { return XMLHTTPRequestTests.webServer }
-    
     private func createContext() -> JSContext {
         let context = JSContext()!
         context.name = self.name
+        //context.exceptionHandler = { (ctx, val) in XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )") }
         context.setObject(XMLHTTPRequest.self, forKeyedSubscript: "XMLHTTPRequest" as (NSCopying & NSObjectProtocol))
         return context
     }
@@ -80,6 +80,9 @@ class XMLHTTPRequestTests: XCTestCase {
     func testSend_JavaScript() {
         
         let context = createContext()
+        context.exceptionHandler = { (ctx, val) in
+            XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )")
+        }
         
         /*
         context.evaluateScript("""
@@ -95,23 +98,15 @@ req.send();
 """)
         */
         
-        context.exceptionHandler = { (ctx, val) in
-            print("exceptionHandler( \(String(describing: val)) )")
-        }
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
         
-        context.evaluateScript("""
-var req = new XMLHTTPRequest();
-//req.open("GET", "https://google.com", true);
-//req.send();
-""")
         let onreadystatechangeExpectation = XCTestExpectation(description: "Invoke req.onreadystatechange")
         let onreadystatechange: EventListener = {
             print("onreadystatechange()")
             onreadystatechangeExpectation.fulfill()
         }
         //let onreadystatechange: EventListener = { onreadystatechangeExpectation.fulfill() }
-        
-        let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
         req.onreadystatechange = onreadystatechange
         //XCTAssertEqual(req.onreadystatechange, onreadystatechange)
         //XCTAssert(req.onreadystatechange! == onreadystatechange, "onreadystatechange was not set")
@@ -124,19 +119,6 @@ var req = new XMLHTTPRequest();
         context.evaluateScript("req.send();")
         
         wait(for: [ onreadystatechangeExpectation, receivedRequestExpectation ], timeout: 1)
-        
-        /*
-        //let req = context.evaluateScript("new XMLHttpRequest()").toObjectOf(XMLHTTPRequest.self)! as! XMLHTTPRequest
-        context.evaluateScript("var req = new XMLHttpRequest();")
-        let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
-        //req.onreadystatechange = {
-        //    print("onreadystatechange()")
-        //}
-        req.onreadystatechange = onreadystatechange
-        context.evaluateScript("req.open('GET', 'https://google.com', true);")
-        context.evaluateScript("req.send();")
-        */
-        
     }
     
 }
