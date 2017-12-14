@@ -20,6 +20,23 @@ public typealias Event = String
     //var listeners: [String: [EventHandler]] { get set }
 }
 
+/*
+// MARK: Default Method Implementations
+
+extension EventTarget {
+    @objc public func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
+        print("EventTarget addEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
+    }
+    @objc public func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
+        print("EventTarget removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
+    }
+    @objc public func dispatchEvent(event: Event!) -> Bool {
+        print("EventTarget dispatchEvent( \(event) )")
+        return true
+    }
+}
+*/
+
 
 
 public typealias EventListener = () -> Void
