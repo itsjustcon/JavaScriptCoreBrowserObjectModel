@@ -22,7 +22,7 @@ public class TestWebServerExpectation: XCTestExpectation {
     convenience init(method: String? = nil, path: String) {
         self.init(description: "Request: [\(method ?? "ALL")] \(path)")
         matcher = { (reqMethod, reqUrl, reqHeaders, reqPath, reqQuery) -> Bool in
-            return (method == nil || method == reqMethod) && (path == reqPath)
+            return (method == nil || method!.uppercased() == reqMethod.uppercased()) && (path.lowercased() == reqPath.lowercased())
         }
     }
 }
@@ -42,22 +42,24 @@ public class TestWebServer: GCDWebServer {
     private(set) var expectations = [TestWebServerExpectation]()
     
     override init() {
-        print("TestWebServer init()")
         super.init()
         
-        addHandler(match: { (method, url, headers, path, query) -> TestWebServerRequest? in
-            print("TestWebServer match( method: \(method), url: \(url), headers: \(headers), path: \(path), query: \(query) )")
+        addHandler(match: { (method, url, headers, path, query) -> GCDWebServerRequest?/*TestWebServerRequest?*/ in
             if let expectation = self.expectations.first(where: { $0.matcher(method, url, headers, path, query) }) {
                 return TestWebServerRequest(method: method, url: url, headers: headers, path: path, query: query, expectation: expectation)
+            } else {
+                return nil
+                //return GCDWebServerRequest(method: method, url: url, headers: headers, path: path, query: query)
             }
-            return nil
-        }) { (request/*: TestWebServerRequest*/) -> GCDWebServerResponse? in
+        }) { (request) in
+            var response: GCDWebServerResponse? = nil
             if let request = request as? TestWebServerRequest {
+                //request.expectation.fulfill()
                 defer { request.expectation.fulfill() }
-                return GCDWebServerResponse(/*statusCode: 200*/)
-                //return GCDWebServerDataResponse(text: "")
+                response = GCDWebServerResponse(statusCode: 200)
+                //response = GCDWebServerDataResponse(text: "")
             }
-            return nil
+            return response
         }
         
     }
