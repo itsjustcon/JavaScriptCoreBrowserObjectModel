@@ -197,6 +197,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		B38D40A31FE20A17005F82AE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				B379FEE01FBD5440000B2BDC /* JSContext+Extensions.swift */,
+				B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		B39B9AFE1FBBF31E00A6C36C = {
 			isa = PBXGroup;
 			children = (
@@ -227,10 +236,9 @@
 			isa = PBXGroup;
 			children = (
 				B39B9B5B1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift */,
-				B379FEE01FBD5440000B2BDC /* JSContext+Extensions.swift */,
-				B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */,
 				B39B9B781FBC0D0400A6C36C /* EventTarget.swift */,
 				B39B9B6E1FBBFF1100A6C36C /* XMLHTTPRequest.swift */,
+				B38D40A31FE20A17005F82AE /* Extensions */,
 				B39B9B5F1FBBF80300A6C36C /* Supporting Files */,
 			);
 			path = Source;
