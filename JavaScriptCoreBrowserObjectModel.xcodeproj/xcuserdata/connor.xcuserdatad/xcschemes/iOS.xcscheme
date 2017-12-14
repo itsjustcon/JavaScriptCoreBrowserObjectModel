@@ -42,6 +42,9 @@
                <Test
                   Identifier = "JavaScriptCoreBrowserObjectModelTests">
                </Test>
+               <Test
+                  Identifier = "XMLHTTPRequestTests">
+               </Test>
             </SkippedTests>
          </TestableReference>
       </Testables>

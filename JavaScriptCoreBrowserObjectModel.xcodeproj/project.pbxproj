@@ -18,6 +18,15 @@
 		B379FEE51FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
 		B379FEE61FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
 		B379FEE71FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
+		B38D40A51FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
+		B38D40A61FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
+		B38D40A71FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
+		B38D40A91FE20A43005F82AE /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A81FE20A43005F82AE /* Timers.swift */; };
+		B38D40AA1FE20A43005F82AE /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A81FE20A43005F82AE /* Timers.swift */; };
+		B38D40AB1FE20A43005F82AE /* Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A81FE20A43005F82AE /* Timers.swift */; };
+		B38D40AD1FE2206E005F82AE /* TimersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40AC1FE2206E005F82AE /* TimersTests.swift */; };
+		B38D40AE1FE2206E005F82AE /* TimersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40AC1FE2206E005F82AE /* TimersTests.swift */; };
+		B38D40AF1FE2206E005F82AE /* TimersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40AC1FE2206E005F82AE /* TimersTests.swift */; };
 		B39B9B121FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B39B9B081FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.framework */; };
 		B39B9B171FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39B9B161FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift */; };
 		B39B9B191FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.h in Headers */ = {isa = PBXBuildFile; fileRef = B39B9B0B1FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -85,6 +94,9 @@
 		B34B78F51FE0DB1E00DA9A9B /* TestWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWebServer.swift; sourceTree = "<group>"; };
 		B379FEE01FBD5440000B2BDC /* JSContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSContext+Extensions.swift"; sourceTree = "<group>"; };
 		B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSValue+Extensions.swift"; sourceTree = "<group>"; };
+		B38D40A41FE20A3C005F82AE /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
+		B38D40A81FE20A43005F82AE /* Timers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
+		B38D40AC1FE2206E005F82AE /* TimersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimersTests.swift; sourceTree = "<group>"; };
 		B39B9B081FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JavaScriptCoreBrowserObjectModel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B39B9B0B1FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JavaScriptCoreBrowserObjectModel.h; sourceTree = "<group>"; };
 		B39B9B0C1FBBF31E00A6C36C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -236,7 +248,9 @@
 			isa = PBXGroup;
 			children = (
 				B39B9B5B1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift */,
+				B38D40A41FE20A3C005F82AE /* Console.swift */,
 				B39B9B781FBC0D0400A6C36C /* EventTarget.swift */,
+				B38D40A81FE20A43005F82AE /* Timers.swift */,
 				B39B9B6E1FBBFF1100A6C36C /* XMLHTTPRequest.swift */,
 				B38D40A31FE20A17005F82AE /* Extensions */,
 				B39B9B5F1FBBF80300A6C36C /* Supporting Files */,
@@ -248,6 +262,7 @@
 			isa = PBXGroup;
 			children = (
 				B39B9B161FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift */,
+				B38D40AC1FE2206E005F82AE /* TimersTests.swift */,
 				B39B9B721FBC003600A6C36C /* XMLHTTPRequestTests.swift */,
 				B34B78F51FE0DB1E00DA9A9B /* TestWebServer.swift */,
 				B39B9B621FBBFB3800A6C36C /* Supporting Files */,
@@ -811,7 +826,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE51FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B38D40A51FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE11FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
+				B38D40A91FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5C1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B6F1FBBFF1100A6C36C /* XMLHTTPRequest.swift in Sources */,
 				B39B9B791FBC0D0400A6C36C /* EventTarget.swift in Sources */,
@@ -825,6 +842,7 @@
 				B34B78F71FE0DB4000DA9A9B /* TestWebServer.swift in Sources */,
 				B39B9B171FBBF31E00A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift in Sources */,
 				B39B9B731FBC003600A6C36C /* XMLHTTPRequestTests.swift in Sources */,
+				B38D40AD1FE2206E005F82AE /* TimersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -833,7 +851,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE61FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B38D40A61FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE21FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
+				B38D40AA1FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5D1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B701FBBFF1100A6C36C /* XMLHTTPRequest.swift in Sources */,
 				B39B9B7A1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
@@ -847,6 +867,7 @@
 				B34B78F81FE0DB4000DA9A9B /* TestWebServer.swift in Sources */,
 				B39B9B741FBC003600A6C36C /* XMLHTTPRequestTests.swift in Sources */,
 				B39B9B761FBC00B700A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift in Sources */,
+				B38D40AE1FE2206E005F82AE /* TimersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -855,7 +876,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE71FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B38D40A71FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE31FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
+				B38D40AB1FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5E1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B711FBBFF1100A6C36C /* XMLHTTPRequest.swift in Sources */,
 				B39B9B7B1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
@@ -869,6 +892,7 @@
 				B34B78F91FE0DB4100DA9A9B /* TestWebServer.swift in Sources */,
 				B39B9B751FBC003600A6C36C /* XMLHTTPRequestTests.swift in Sources */,
 				B39B9B771FBC00B800A6C36C /* JavaScriptCoreBrowserObjectModelTests.swift in Sources */,
+				B38D40AF1FE2206E005F82AE /* TimersTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
