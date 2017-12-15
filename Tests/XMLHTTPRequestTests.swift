@@ -25,20 +25,10 @@ class XMLHTTPRequestTests: XCTestCase {
         webServer.stop()
     }
     
-    /*
-    //var context: JSContext!
-    var context: JSContext! {
-        let context = JSContext()!
-        context.name = self.name
-        context.setObject(XMLHTTPRequest.self, forKeyedSubscript: "XMLHTTPRequest" as (NSCopying & NSObjectProtocol))
-        return context
-    }
-    */
-    
     private func createContext() -> JSContext {
         let context = JSContext()!
         context.name = self.name
-        //context.exceptionHandler = { (ctx, val) in XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )") }
+        context.exceptionHandler = { (ctx, val) in XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )") }
         context.setObject(XMLHTTPRequest.self, forKeyedSubscript: "XMLHTTPRequest" as (NSCopying & NSObjectProtocol))
         return context
     }
@@ -46,10 +36,6 @@ class XMLHTTPRequestTests: XCTestCase {
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
-        
-        //context = JSContext()!
-        //context.name = self.name
-        //context.setObject(XMLHTTPRequest.self, forKeyedSubscript: "XMLHTTPRequest" as (NSCopying & NSObjectProtocol))
     }
     
     override func tearDown() {
@@ -67,11 +53,13 @@ class XMLHTTPRequestTests: XCTestCase {
     
     func testSend_Swift() {
         
+        let context = createContext()
+        
         let req = XMLHTTPRequest()
-        req.onreadystatechange = {
+        let onreadystatechange: @convention(block) () -> Void = {
             print("onreadystatechange()")
         }
-        //req.open("GET", "https://google.com")
+        req.onreadystatechange = JSValue(object: onreadystatechange, in: context)
         req.open("GET", webServer.serverURL!.absoluteString)
         req.send(nil)
         
@@ -80,9 +68,6 @@ class XMLHTTPRequestTests: XCTestCase {
     func testSend_JavaScript() {
         
         let context = createContext()
-        context.exceptionHandler = { (ctx, val) in
-            XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )")
-        }
         
         /*
         context.evaluateScript("""
@@ -110,15 +95,12 @@ req.send();
         ]
         
         let onreadystatechangeExpectation = XCTestExpectation(description: "Invoke req.onreadystatechange")
-        let onreadystatechange: EventListener = {
+        let onreadystatechange: @convention(block) () -> Void = {
             //print("onreadystatechange() \(req.readyState.rawValue)")
             onreadystatechangeExpectation.fulfill()
             expectations[req.readyState]?.fulfill()
         }
-        //let onreadystatechange: EventListener = { onreadystatechangeExpectation.fulfill() }
-        req.onreadystatechange = onreadystatechange
-        //XCTAssertEqual(req.onreadystatechange, onreadystatechange)
-        //XCTAssert(req.onreadystatechange! == onreadystatechange, "onreadystatechange was not set")
+        req.onreadystatechange = JSValue(object: onreadystatechange, in: context)
         XCTAssertNotNil(req.onreadystatechange, "onreadystatechange was not set")
         
         let receivedRequestExpectation = webServer.expect(path: "/")
