@@ -112,4 +112,24 @@ req.send();
         //wait(for: [ expectations[.OPENED]!, expectations[.HEADERS_RECEIVED]!, expectations[.LOADING]!, expectations[.DONE]! ], timeout: 1, enforceOrder: true)
     }
     
+    func testEventListeners() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        //let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('error', callback)")
+        context.evaluateScript("req.dispatchEvent('error')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
 }
