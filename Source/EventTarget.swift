@@ -12,34 +12,64 @@ import Foundation
 public typealias Event = String
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
-@objc public protocol EventTarget: JSExport {
-    func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void
-    func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void
-    func dispatchEvent(event: Event!) -> Bool
+@objc public protocol EventTargetJSProtocol: JSExport {
+    func addEventListener(_ event: Event!, _ listener: JSValue!/*EventListener!*/) -> Void
+    func removeEventListener(_ event: Event!, _ listener: JSValue!/*EventListener!*/) -> Void
+    func dispatchEvent(_ event: Event!) -> Bool
     // private
     //var listeners: [String: [EventHandler]] { get set }
 }
 
-/*
-// MARK: Default Method Implementations
-
-extension EventTarget {
-    @objc public func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("EventTarget addEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
+@objc public class EventTarget: NSObject, EventTargetJSProtocol {
+    
+    private var _eventListeners = [Event: [( eventListener: EventListener, options: EventListenerOptions? )]]()
+    
+    public func addEventListener(_ event: Event!, _ listener: JSValue!/*EventListener!*/) -> Void {
+        print("EventTarget addEventListener( event: \(event), listener: \(listener) )")
+        if _eventListeners[event] == nil {
+            _eventListeners[event] = [( eventListener: EventListener, options: EventListenerOptions? )]()
+        }
+        _eventListeners[event]!.append(( eventListener: listener, options: /*options*/nil ))
+        return
     }
-    @objc public func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("EventTarget removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
+    
+    public func removeEventListener(_ event: Event!, _ listener: JSValue!/*EventListener!*/) -> Void {
+        print("EventTarget removeEventListener( event: \(event), listener: \(listener) )")
+        if var eventListeners = _eventListeners[event] {
+            //if let listenerIdx = eventListeners.index(where: { listener! == $0.eventListener }) {
+            if let listenerIdx = eventListeners.index(where: { unsafeBitCast(listener, to: AnyObject.self) === unsafeBitCast($0.eventListener, to: AnyObject.self) }) {
+                eventListeners.remove(at: listenerIdx)
+            }
+        }
+        return
     }
-    @objc public func dispatchEvent(event: Event!) -> Bool {
-        print("EventTarget dispatchEvent( \(event) )")
+    
+    public func dispatchEvent(_ event: Event!) -> Bool {
+        print("EventTarget dispatchEvent( \(String(stringLiteral: event)) )")
+        if let eventListener = value(forKey: "on\(String(stringLiteral: event))") as? EventListener {
+            //eventListener()
+            eventListener.call(withArguments: [])
+        }
+        if var eventListeners = _eventListeners[event] {
+            print("  eventListeners: \(eventListeners)")
+            eventListeners.forEach({ (eventListener, options) in
+                //eventListener()
+                eventListener.call(withArguments: [])
+            })
+            while let removeIdx = eventListeners.index(where: { $0.options?.once == true }) {
+                eventListeners.remove(at: removeIdx)
+            }
+        }
         return true
     }
+    
 }
-*/
 
 
 
-public typealias EventListener = () -> Void
+//public typealias EventListener = () -> Void
+//public typealias EventListener = @convention(block) () -> ()
+public typealias EventListener = JSValue
 
 @objc public protocol EventListenerOptions {
     var capture: Bool { get set }
