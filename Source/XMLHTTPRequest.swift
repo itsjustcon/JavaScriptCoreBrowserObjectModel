@@ -39,11 +39,12 @@ import JavaScriptCore
 //    var responseType: XMLHTTPRequestResponseType { get }
 //}
 
-@objc public class XMLHTTPRequest: NSObject, XMLHTTPRequestJSProtocol {
+@objc public class XMLHTTPRequest: /*NSObject*/EventTarget, XMLHTTPRequestJSProtocol {
     
     public var readyState: XMLHTTPRequestReadyState = .UNSENT { // read-only
         didSet {
-            onreadystatechange?()
+            //onreadystatechange?()
+            let _ = onreadystatechange?.call(withArguments: [])
         }
     }
     
@@ -100,16 +101,7 @@ import JavaScriptCore
         
         return nil
     }
-    
-    //public func open(_ method: String!, _ url: String!) -> Void {
-    //    return open(method, url, true, nil, nil)
-    //}
-    //public func open(_ method: String!, _ url: String!, _ async: Bool = true) -> Void {
-    //    return open(method, url, async, nil, nil)
-    //}
-    //public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String?) -> Void {
-    //    return open(method, url, async, user, nil)
-    //}
+
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String? = nil, _ password: String? = nil) -> Void {
         print("XMLHTTPRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
         
@@ -159,23 +151,6 @@ import JavaScriptCore
     }
     
     //
-    // MARK: - EventTarget -
-    //
-    
-    public func addEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("XMLHTTPRequest addEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
-    }
-    
-    public func removeEventListener(type: Event!, listener: EventListener!, options: EventListenerOptions?, useCapture: Bool) -> Void {
-        print("XMLHTTPRequest removeEventListener( type: \(type), listener: \(listener), options: \(String(describing: options)), useCapture: \(useCapture) )")
-    }
-
-    public func dispatchEvent(event: Event!) -> Bool {
-        print("XMLHTTPRequest dispatchEvent( \(event) )")
-        return true
-    }
-    
-    //
     // MARK: - XMLHttpRequestEventTarget -
     //
     
@@ -209,7 +184,7 @@ import JavaScriptCore
 }
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget
-@objc public protocol XMLHttpRequestEventTarget: JSExport, EventTarget {
+@objc public protocol XMLHttpRequestEventTarget: JSExport, EventTargetJSProtocol {
     var onabort: EventListener? { get set }
     var onerror: EventListener? { get set }
     var onload: EventListener? { get set }
