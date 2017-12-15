@@ -44,7 +44,8 @@ import JavaScriptCore
     public var readyState: XMLHTTPRequestReadyState = .UNSENT { // read-only
         didSet {
             //onreadystatechange?()
-            let _ = onreadystatechange?.call(withArguments: [])
+            //onreadystatechange?.value.call(withArguments: [])
+            dispatchEvent("readystatechange")
         }
     }
     
