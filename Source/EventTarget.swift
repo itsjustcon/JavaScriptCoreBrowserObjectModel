@@ -24,7 +24,7 @@ import Foundation
         let context = (JSContext.current() ?? listener.context)!
         //if var options = options {
         //    if options.isBoolean {
-        //        options = JSValue(object: ( capture: options.toBool(), once: false, passive: false ), in: JSContext.current())
+        //        options = JSValue(object: ( capture: options.toBool(), once: false, passive: false ), in: context)
         //    } else if /*options is EventListenerOptions*/options.isObject {
         //        // ...
         //    }
@@ -33,8 +33,8 @@ import Foundation
             _eventListeners[event] = [( eventListener: EventListener, options: EventListenerOptions? )]()
         }
         //_eventListeners[event]!.append(( eventListener: listener, options: /*options*/nil ))
-        let managedValue = JSManagedValue(value: listener)!
-        JSContext.current().virtualMachine.addManagedReference(managedValue, withOwner: self)
+        let managedValue = JSManagedValue(value: listener/*, andOwner: self*/)!
+        context.virtualMachine.addManagedReference(managedValue, withOwner: self)
         _eventListeners[event]!.append(( eventListener: managedValue, options: /*options*/nil ))
         return
     }

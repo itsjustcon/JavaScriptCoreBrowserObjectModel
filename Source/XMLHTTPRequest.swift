@@ -170,13 +170,13 @@ import JavaScriptCore
     public var onreadystatechange: EventListener?
     // TODO: investigate the need for this:
     //public var onreadystatechange: EventListener? {
-    //    willSet {
-    //        if self.onreadystatechange != nil, let context = JSContext.current() {
-    //            context.virtualMachine.removeManagedReference(self.onreadystatechange!, withOwner: self)
-    //        }
-    //    }
+    //    //willSet {
+    //    //    if self.onreadystatechange != nil, let context = (JSContext.current() ?? listener.context) {
+    //    //        context.virtualMachine.removeManagedReference(self.onreadystatechange!, withOwner: self)
+    //    //    }
+    //    //}
     //    didSet {
-    //        if self.onreadystatechange != nil, let context = JSContext.current() {
+    //        if self.onreadystatechange != nil, let context = (JSContext.current() ?? listener.context) {
     //            context.virtualMachine.addManagedReference(self.onreadystatechange!, withOwner: self)
     //        }
     //    }
