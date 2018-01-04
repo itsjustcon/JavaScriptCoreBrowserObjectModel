@@ -135,4 +135,160 @@ req.send();
         
     }
     
+    func testEventLoadStart() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('loadstart', callback)")
+        context.evaluateScript("req.dispatchEvent('loadstart')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventProgress() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('progress', callback)")
+        context.evaluateScript("req.dispatchEvent('progress')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventAbort() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('abort', callback)")
+        context.evaluateScript("req.dispatchEvent('abort')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventError() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('error', callback)")
+        context.evaluateScript("req.dispatchEvent('error')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventLoad() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('load', callback)")
+        context.evaluateScript("req.dispatchEvent('load')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventTimeout() {
+        
+        let context = createContext()
+        let timeout = 0.1
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.timeout = \(timeout * 1000)")
+        context.evaluateScript("req.addEventListener('timeout', callback)")
+        //context.evaluateScript("req.dispatchEvent('timeout')")
+        
+        // TODO: find a way to issue req to dev server but don't respond
+        
+        wait(for: [ callbackExpectation ], timeout: timeout * 1.1)
+        
+    }
+    
+    func testEventLoadEnd() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('loadend', callback)")
+        context.evaluateScript("req.dispatchEvent('loadend')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
+    func testEventReadyStateChange() {
+        
+        let context = createContext()
+        
+        context.evaluateScript("var req = new XMLHTTPRequest();")
+        
+        let callbackExpectation = XCTestExpectation(description: "Invoke callback")
+        let callback: @convention(block) () -> Void = {
+            callbackExpectation.fulfill()
+        }
+        context.setObject(callback, forKeyedSubscript: "callback" as (NSCopying & NSObjectProtocol))
+        
+        context.evaluateScript("req.addEventListener('readystatechange', callback)")
+        context.evaluateScript("req.dispatchEvent('readystatechange')")
+        
+        wait(for: [ callbackExpectation ], timeout: 1)
+        
+    }
+    
 }
