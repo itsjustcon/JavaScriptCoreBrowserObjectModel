@@ -11,8 +11,8 @@ import Foundation
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
 @objc public protocol EventTargetJSProtocol: JSExport {
-    func addEventListener(_ event: String!, _ listener: JSValue!, options: JSValue?) -> Void
-    func removeEventListener(_ event: String!, _ listener: JSValue!, options: JSValue?) -> Void
+    func addEventListener(_ event: String!, _ listener: JSValue!, _ options: JSValue?) -> Void
+    func removeEventListener(_ event: String!, _ listener: JSValue!, _ options: JSValue?) -> Void
     func dispatchEvent(_ event: String!) -> Bool
 }
 
@@ -20,7 +20,8 @@ import Foundation
     
     private var _eventListeners = [String: [( eventListener: EventListener, options: EventListenerOptions? )]]()
     
-    public func addEventListener(_ event: String!, _ listener: JSValue!, options: JSValue?) -> Void {
+    public func addEventListener(_ event: String!, _ listener: JSValue!, _ options: JSValue? = nil) -> Void {
+        let context = (JSContext.current() ?? listener.context)!
         //if var options = options {
         //    if options.isBoolean {
         //        options = JSValue(object: ( capture: options.toBool(), once: false, passive: false ), in: JSContext.current())
@@ -38,7 +39,7 @@ import Foundation
         return
     }
     
-    public func removeEventListener(_ event: String!, _ listener: JSValue!, options: JSValue?) -> Void {
+    public func removeEventListener(_ event: String!, _ listener: JSValue!, _ options: JSValue? = nil) -> Void {
         if var eventListeners = _eventListeners[event] {
             if let listenerIdx = eventListeners.index(where: { listener == $0.eventListener.value }) {
                 let removed = eventListeners.remove(at: listenerIdx)
