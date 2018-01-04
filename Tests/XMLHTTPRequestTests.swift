@@ -59,7 +59,9 @@ class XMLHTTPRequestTests: XCTestCase {
         let onreadystatechange: @convention(block) () -> Void = {
             print("onreadystatechange()")
         }
-        req.onreadystatechange = JSValue(object: onreadystatechange, in: context)
+        //req.onreadystatechange = EventListener(value: JSValue(object: onreadystatechange, in: context))
+        //XCTAssertNotNil(req.onreadystatechange, "onreadystatechange was not set")
+        req.addEventListener("readystatechange", JSValue(object: onreadystatechange, in: context))
         req.open("GET", webServer.serverURL!.absoluteString)
         req.send(nil)
         
@@ -100,8 +102,9 @@ req.send();
             onreadystatechangeExpectation.fulfill()
             expectations[req.readyState]?.fulfill()
         }
-        req.onreadystatechange = JSValue(object: onreadystatechange, in: context)
-        XCTAssertNotNil(req.onreadystatechange, "onreadystatechange was not set")
+        //req.onreadystatechange = EventListener(value: JSValue(object: onreadystatechange, in: context))
+        //XCTAssertNotNil(req.onreadystatechange, "onreadystatechange was not set")
+        req.addEventListener("readystatechange", JSValue(object: onreadystatechange, in: context))
         
         let receivedRequestExpectation = webServer.expect(path: "/")
         
