@@ -23,13 +23,13 @@ import JavaScriptCore
         return Console()
     }()
     
-    //private var stdout: TextOutputStream = StdOutStream()
-    //private var stderr: TextOutputStream = StdOutStream()
+    private var stdout: TextOutputStream? //= ""
+    private var stderr: TextOutputStream? //= ""
     
     public init(stdout: TextOutputStream? = nil, stderr: TextOutputStream? = nil) {
         super.init()
-        //self.stdout = stdout ?? StdOutStream()
-        //self.stderr = stderr ?? self.stdout
+        self.stdout = stdout
+        self.stderr = stderr ?? stdout
     }
     
     public func debug(_ message: String) -> Void {
@@ -73,12 +73,3 @@ extension Console {
         self.default.warn(message)
     }
 }
-
-
-
-//fileprivate struct StdOutStream: TextOutputStream {
-//    mutating func write(_ string: String) {
-//        print(string)
-//    }
-//}
-
