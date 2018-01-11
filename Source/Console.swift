@@ -17,7 +17,7 @@ import JavaScriptCore
     static func warn(_ message: String) -> Void
 }
 
-@objc class Console: NSObject, ConsoleProtocol {
+@objc open class Console: NSObject, ConsoleProtocol {
     
     static var `default` = {
         return Console()
