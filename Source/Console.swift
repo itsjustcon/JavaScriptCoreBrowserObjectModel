@@ -33,23 +33,31 @@ import JavaScriptCore
     }
     
     public func debug(_ message: String) -> Void {
-        print(String(message))
+        //print(String(message))
+        //guard stdout != nil else { return }
+        //guard var stdout = stdout else { return }
+        //print(String(message), to: &stdout)
+        stdout?.write(String(message))
     }
     
     public func error(_ message: String) -> Void {
-        print(String(message))
+        //print(String(message))
+        stdout?.write(String(message))
     }
     
     public func info(_ message: String) -> Void {
-        print(String(message))
+        //print(String(message))
+        stdout?.write(String(message))
     }
     
     public func log(_ message: String) -> Void {
-        print(String(message))
+        //print(String(message))
+        stdout?.write(String(message))
     }
     
     public func warn(_ message: String) -> Void {
-        print(String(message))
+        //print(String(message))
+        stdout?.write(String(message))
     }
     
 }
