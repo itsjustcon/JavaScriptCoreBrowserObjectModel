@@ -26,7 +26,7 @@ import JavaScriptCore
     //private var stdout: TextOutputStream = StdOutStream()
     //private var stderr: TextOutputStream = StdOutStream()
     
-    init(stdout: TextOutputStream? = nil, stderr: TextOutputStream? = nil) {
+    public init(stdout: TextOutputStream? = nil, stderr: TextOutputStream? = nil) {
         super.init()
         //self.stdout = stdout ?? StdOutStream()
         //self.stderr = stderr ?? self.stdout
