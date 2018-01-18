@@ -99,8 +99,9 @@ import JavaScriptCore
     }
     public func getResponseHeader(_ name: String!) -> String? {
         print("XMLHttpRequest getResponseHeader( name: \(name) )")
-        
-        return nil
+        //return _responseHeaders[name]
+        //return _responseHeaders[name.lowercased()]
+        return _responseHeaders.first(where: { $0.key.lowercased() == name.lowercased() })?.value
     }
 
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String? = nil, _ password: String? = nil) -> Void {
