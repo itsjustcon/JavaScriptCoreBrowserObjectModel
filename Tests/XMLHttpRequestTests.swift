@@ -1,5 +1,5 @@
 //
-//  XMLHTTPRequestTests.swift
+//  XMLHttpRequestTests.swift
 //  JavaScriptCoreBrowserObjectModel
 //
 //  Created by Connor Grady on 11/14/17.
@@ -9,12 +9,12 @@
 import JavaScriptCore
 import XCTest
 @testable import JavaScriptCoreBrowserObjectModel
-//@testable import JavaScriptCoreBrowserObjectModel.XMLHTTPRequest
+//@testable import JavaScriptCoreBrowserObjectModel.XMLHttpRequest
 
-class XMLHTTPRequestTests: XCTestCase {
+class XMLHttpRequestTests: XCTestCase {
     
     static var webServer = TestWebServer()
-    var webServer: TestWebServer { return XMLHTTPRequestTests.webServer }
+    var webServer: TestWebServer { return XMLHttpRequestTests.webServer }
     
     override class func setUp() {
         super.setUp()
@@ -29,7 +29,7 @@ class XMLHTTPRequestTests: XCTestCase {
         let context = JSContext()!
         context.name = self.name
         context.exceptionHandler = { (ctx, val) in XCTFail("\(ctx?.name ?? self.name) exceptionHandler( \(String(describing: val)) )") }
-        context.setObject(XMLHTTPRequest.self, forKeyedSubscript: "XMLHTTPRequest" as (NSCopying & NSObjectProtocol))
+        context.setObject(XMLHttpRequest.self, forKeyedSubscript: "XMLHttpRequest" as (NSCopying & NSObjectProtocol))
         return context
     }
     
@@ -46,16 +46,16 @@ class XMLHTTPRequestTests: XCTestCase {
     
     func testInit() {
         let context = createContext()
-        let result = context.evaluateScript("new XMLHTTPRequest()")
+        let result = context.evaluateScript("new XMLHttpRequest()")
         XCTAssert(!result!.isUndefined, "result must not be undefined")
-        XCTAssert(result!.isInstance(of: XMLHTTPRequest.self), "result must be an instance of XMLHTTPRequest")
+        XCTAssert(result!.isInstance(of: XMLHttpRequest.self), "result must be an instance of XMLHttpRequest")
     }
     
     func testSend_Swift() {
         
         let context = createContext()
         
-        let req = XMLHTTPRequest()
+        let req = XMLHttpRequest()
         let onreadystatechange: @convention(block) () -> Void = {
             print("onreadystatechange()")
         }
@@ -73,7 +73,7 @@ class XMLHTTPRequestTests: XCTestCase {
         
         /*
         context.evaluateScript("""
-var req = new XMLHTTPRequest();
+var req = new XMLHttpRequest();
 req.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
        // Typical action to be performed when the document is ready:
@@ -85,15 +85,15 @@ req.send();
 """)
         */
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
-        let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
+        context.evaluateScript("var req = new XMLHttpRequest();")
+        let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHttpRequest.self) as! XMLHttpRequest
         
-        let expectations: [XMLHTTPRequestReadyState: XCTestExpectation] = [
-            //.UNSENT: XCTestExpectation(description: "XMLHTTPRequestReadyState.UNSENT"),
-            .OPENED: XCTestExpectation(description: "XMLHTTPRequestReadyState.OPENED"),
-            .HEADERS_RECEIVED: XCTestExpectation(description: "XMLHTTPRequestReadyState.HEADERS_RECEIVED"),
-            .LOADING: XCTestExpectation(description: "XMLHTTPRequestReadyState.LOADING"),
-            .DONE: XCTestExpectation(description: "XMLHTTPRequestReadyState.DONE"),
+        let expectations: [XMLHttpRequestReadyState: XCTestExpectation] = [
+            //.UNSENT: XCTestExpectation(description: "XMLHttpRequestReadyState.UNSENT"),
+            .OPENED: XCTestExpectation(description: "XMLHttpRequestReadyState.OPENED"),
+            .HEADERS_RECEIVED: XCTestExpectation(description: "XMLHttpRequestReadyState.HEADERS_RECEIVED"),
+            .LOADING: XCTestExpectation(description: "XMLHttpRequestReadyState.LOADING"),
+            .DONE: XCTestExpectation(description: "XMLHttpRequestReadyState.DONE"),
         ]
         
         let onreadystatechangeExpectation = XCTestExpectation(description: "Invoke req.onreadystatechange")
@@ -119,8 +119,8 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
-        //let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHTTPRequest.self) as! XMLHTTPRequest
+        context.evaluateScript("var req = new XMLHttpRequest();")
+        //let req = context.objectForKeyedSubscript("req").toObjectOf(XMLHttpRequest.self) as! XMLHttpRequest
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -139,7 +139,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -158,7 +158,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -177,7 +177,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -196,7 +196,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -215,7 +215,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -235,7 +235,7 @@ req.send();
         let context = createContext()
         let timeout = 0.1
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -257,7 +257,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
@@ -276,7 +276,7 @@ req.send();
         
         let context = createContext()
         
-        context.evaluateScript("var req = new XMLHTTPRequest();")
+        context.evaluateScript("var req = new XMLHttpRequest();")
         
         let callbackExpectation = XCTestExpectation(description: "Invoke callback")
         let callback: @convention(block) () -> Void = {
