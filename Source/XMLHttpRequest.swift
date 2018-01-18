@@ -140,8 +140,7 @@ import JavaScriptCore
         dataTask.resume()
         _dataTask = dataTask
         
-        readyState = .OPENED
-        //readyState = .HEADERS_RECEIVED
+        //readyState = .OPENED
         
     }
     
@@ -322,6 +321,9 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
+        
+        readyState = .DONE
+        
     }
     
 }
@@ -332,6 +334,15 @@ extension XMLHttpRequest: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Swift.Void) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(completionHandler) )")
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            status = httpResponse.statusCode
+            _responseHeaders = (httpResponse.allHeaderFields as? [String: String]) ?? [:]
+            readyState = .HEADERS_RECEIVED
+        }
+        
+        completionHandler(.allow)
+        
     }
     
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask) {
@@ -345,6 +356,11 @@ extension XMLHttpRequest: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
+        
+        if readyState == .HEADERS_RECEIVED {
+            readyState = .LOADING
+        }
+        
     }
     
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Swift.Void) {
