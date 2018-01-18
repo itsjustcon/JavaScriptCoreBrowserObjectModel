@@ -87,8 +87,12 @@ import JavaScriptCore
     public func abort() -> Void {
         print("XMLHttpRequest abort()")
         
-        status = 0 //.complete
+        _dataTask?.cancel()
+        
+        status = 0
         readyState = .DONE
+        
+        dispatchEvent("abort")
         
     }
     
