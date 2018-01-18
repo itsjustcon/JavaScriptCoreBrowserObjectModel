@@ -97,7 +97,6 @@ import JavaScriptCore
     }
     
     public func getAllResponseHeaders() -> String? {
-        print("XMLHttpRequest getAllResponseHeaders()")
         guard readyState.rawValue >= XMLHttpRequestReadyState.HEADERS_RECEIVED.rawValue,
             _responseHeaders.count > 0
             else { return nil }
@@ -109,7 +108,6 @@ import JavaScriptCore
         //       therefore the returned string must end with CRLF as well
     }
     public func getResponseHeader(_ name: String!) -> String? {
-        print("XMLHttpRequest getResponseHeader( name: \(name) )")
         //return _responseHeaders[name]
         //return _responseHeaders[name.lowercased()]
         return _responseHeaders.first(where: { $0.key.lowercased() == name.lowercased() })?.value
@@ -132,7 +130,6 @@ import JavaScriptCore
         print("XMLHttpRequest overrideMimeType( mimetype: \(mimetype) )")
     }
     
-    //public func send(_ body: String?) -> Void {
     public func send(_ body: JSValue?) -> Void {
         print("XMLHttpRequest send( \(String(describing: body)) )")
         
@@ -153,7 +150,6 @@ import JavaScriptCore
     }
     
     public func setRequestHeader(_ header: String!, _ value: String!) -> Void {
-        print("XMLHttpRequest setRequestHeader( header: \(header), value: \(value) )")
         //_request.setValue(value, forHTTPHeaderField: header)
         _requestHeaders[header] = value
     }
