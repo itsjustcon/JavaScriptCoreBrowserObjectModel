@@ -6,8 +6,8 @@
 //  Copyright © 2017 Connor Grady. All rights reserved.
 //
 
-import JavaScriptCore
 import Foundation
+import JavaScriptCore
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
 @objc public protocol EventTargetJSProtocol: JSExport {
