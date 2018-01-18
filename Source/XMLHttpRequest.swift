@@ -324,6 +324,12 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
         
         readyState = .DONE
         
+        if let error = error {
+            dispatchEvent("error")
+        }
+        
+        dispatchEvent("loadend")
+        
     }
     
 }
