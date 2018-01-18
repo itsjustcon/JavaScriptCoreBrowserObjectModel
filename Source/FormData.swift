@@ -9,7 +9,7 @@
 import Foundation
 import JavaScriptCore
 
-@objc protocol FormDataJSProtocol: JSExport {
+@objc protocol FormDataJSProtocol: JSExport, EventTargetJSProtocol {
     init()
     func append(_ name: String, _ value: JSValue, _ filename: String?) -> Void
     func delete(_ name: String) -> Void
