@@ -10,11 +10,13 @@ import Foundation
 import JavaScriptCore
 
 @objc protocol ConsoleProtocol : JSExport {
-    static func debug(_ message: String) -> Void
-    static func error(_ message: String) -> Void
-    static func info(_ message: String) -> Void
-    static func log(_ message: String) -> Void
-    static func warn(_ message: String) -> Void
+    //init()
+    //init(stdout: TextOutputStream?, stderr: TextOutputStream?)
+    func debug(_ message: String) -> Void
+    func error(_ message: String) -> Void
+    func info(_ message: String) -> Void
+    func log(_ message: String) -> Void
+    func warn(_ message: String) -> Void
 }
 
 @objc open class Console: NSObject, ConsoleProtocol {
@@ -34,24 +36,20 @@ import JavaScriptCore
     
     public func debug(_ message: String) -> Void {
         //print(String(message))
-        //guard stdout != nil else { return }
         //guard var stdout = stdout else { return }
         //print(String(message), to: &stdout)
         stdout?.write(String(message))
     }
     
     public func error(_ message: String) -> Void {
-        //print(String(message))
-        stdout?.write(String(message))
+        stderr?.write(String(message))
     }
     
     public func info(_ message: String) -> Void {
-        //print(String(message))
         stdout?.write(String(message))
     }
     
     public func log(_ message: String) -> Void {
-        //print(String(message))
         stdout?.write(String(message))
     }
     
@@ -60,24 +58,4 @@ import JavaScriptCore
         stdout?.write(String(message))
     }
     
-}
-
-// MARK: Static Methods
-
-extension Console {
-    public class func debug(_ message: String) -> Void {
-        self.default.debug(message)
-    }
-    public class func error(_ message: String) -> Void {
-        self.default.error(message)
-    }
-    public class func info(_ message: String) -> Void {
-        self.default.info(message)
-    }
-    public class func log(_ message: String) -> Void {
-        self.default.log(message)
-    }
-    public class func warn(_ message: String) -> Void {
-        self.default.warn(message)
-    }
 }
