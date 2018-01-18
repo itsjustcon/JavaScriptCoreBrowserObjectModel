@@ -328,7 +328,7 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
         
         readyState = .DONE
         
-        if let error = error {
+        if error != nil {
             dispatchEvent("error")
         }
         
