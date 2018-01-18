@@ -98,8 +98,15 @@ import JavaScriptCore
     
     public func getAllResponseHeaders() -> String? {
         print("XMLHttpRequest getAllResponseHeaders()")
-        
-        return nil
+        guard readyState.rawValue >= XMLHttpRequestReadyState.HEADERS_RECEIVED.rawValue,
+            _responseHeaders.count > 0
+            else { return nil }
+        return _responseHeaders
+            .filter({ (key, _) in ![ "set-cookie", "set-cookie2" ].contains(key.lowercased()) })
+            .map({ (key, value) in "\(key): \(value)\r\n" })
+            .joined(/*separator: "\r\n"*/)
+        // NOTE: we can't use `separator` here b/c each header must end with CRLF,
+        //       therefore the returned string must end with CRLF as well
     }
     public func getResponseHeader(_ name: String!) -> String? {
         print("XMLHttpRequest getResponseHeader( name: \(name) )")
@@ -119,7 +126,6 @@ import JavaScriptCore
         _password = password
         
         readyState = .OPENED
-        
     }
     
     public func overrideMimeType(_ mimetype: String!) -> Void {
@@ -144,9 +150,6 @@ import JavaScriptCore
         }*/
         dataTask.resume()
         _dataTask = dataTask
-        
-        //readyState = .OPENED
-        
     }
     
     public func setRequestHeader(_ header: String!, _ value: String!) -> Void {
