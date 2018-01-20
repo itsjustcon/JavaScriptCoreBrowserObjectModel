@@ -57,9 +57,10 @@ import JavaScriptCore
     public func removeEventListener(_ event: String!, _ listener: JSValue!, _ options: JSValue? = nil) -> Void {
         if var eventListeners = _eventListeners[event] {
             if let listenerIdx = eventListeners.index(where: { listener == $0.eventListener.value }) {
-                let removed = eventListeners.remove(at: listenerIdx)
-                let virtualMachine = removed.eventListener.value.context.virtualMachine
-                virtualMachine?.removeManagedReference(removed.eventListener, withOwner: self)
+                //let removed = eventListeners.remove(at: listenerIdx)
+                //let virtualMachine = removed.eventListener.value.context.virtualMachine
+                //virtualMachine?.removeManagedReference(removed.eventListener, withOwner: self)
+                removeEventListener(event, listenerIdx)
             }
         }
         return
@@ -73,10 +74,12 @@ import JavaScriptCore
     func removeEventListener(_ event: String, _ index: Int) -> Bool {
         if var eventListeners = _eventListeners[event] {
             let removed = eventListeners.remove(at: index)
-            if let listener = removed.eventListener.value as JSValue? {
-                let virtualMachine = listener.context.virtualMachine
-                virtualMachine?.removeManagedReference(removed.eventListener, withOwner: self)
-            }
+            let virtualMachine = removed.eventListener.value.context.virtualMachine
+            virtualMachine?.removeManagedReference(removed.eventListener, withOwner: self)
+            //if let listener = removed.eventListener.value as JSValue? {
+            //    let virtualMachine = listener.context.virtualMachine
+            //    virtualMachine?.removeManagedReference(removed.eventListener, withOwner: self)
+            //}
             return true
         }
         return false
@@ -97,7 +100,7 @@ import JavaScriptCore
     
     @discardableResult
     public func dispatchEvent(_ event: String!) -> Bool {
-        removeReleasedEventListeners()
+        //removeReleasedEventListeners()
         if let eventListener = value(forKey: "on\(String(stringLiteral: event))") as? EventListener {
             eventListener.value.call(withArguments: [])
         }
