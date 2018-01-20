@@ -73,7 +73,9 @@ import JavaScriptCore
 
 
 //public typealias EventListener = () -> Void
-//public typealias EventListener = @convention(block) () -> ()
+//public typealias EventListener = (Event) -> Void
+//public typealias EventListener = @convention(block) () -> Void
+//public typealias EventListener = @convention(block) (Event) -> Void
 //public typealias EventListener = JSValue
 public typealias EventListener = JSManagedValue
 
