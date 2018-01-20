@@ -68,7 +68,8 @@ import JavaScriptCore
     // MARK: Internal Variables
     //private var _urlSession: URLSession = URLSession.shared
     private lazy var _urlSession: URLSession = {
-        return URLSession(configuration: /*.default*/.ephemeral, delegate: self, delegateQueue: nil)
+        //return URLSession(configuration: /*.default*/.ephemeral, delegate: self, delegateQueue: nil)
+        return URLSession(configuration: /*.default*/.ephemeral, delegate: URLSessionDelegateProxy(target: self), delegateQueue: nil)
         //return URLSession(configuration: .background(withIdentifier: "JavaScriptCoreBrowserObjectModel.XMLHttpRequest"), delegate: self, delegateQueue: nil)
     }()
     private var _requestHeaders = [String: String]()
@@ -82,6 +83,15 @@ import JavaScriptCore
     
     public override required init() {
         super.init()
+        if let context = JSContext.current() {
+            context.virtualMachine.addManagedReference(self, withOwner: context)
+        }
+    }
+    
+    deinit {
+        print("XMLHttpRequest deinit")
+        //(_urlSession.delegate as? WeakURLSessionDelegate)?.target = nil
+        _urlSession.invalidateAndCancel()
     }
     
     public func abort() -> Void {
@@ -133,6 +143,9 @@ import JavaScriptCore
     public func send(_ body: JSValue?) -> Void {
         print("XMLHttpRequest send( \(String(describing: body)) )")
         
+        //JSValueProtect(JSContext.current()!.jsGlobalContextRef, JSContext.currentThis().jsValueRef)
+        //JSContext.current().virtualMachine.addManagedReference(self, withOwner: JSContext.current().jsGlobalContextRef)
+        
         for (header, value) in _requestHeaders {
             _request!.setValue(value, forHTTPHeaderField: header)
         }
@@ -143,7 +156,7 @@ import JavaScriptCore
         
         let dataTask = _urlSession.dataTask(with: _request!) /*{ (data, response, error) in
             print("_dataTask callback!!!")
-            self.readyState = .DONE
+            //self.readyState = .DONE
         }*/
         dataTask.resume()
         _dataTask = dataTask

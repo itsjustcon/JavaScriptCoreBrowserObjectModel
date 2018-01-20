@@ -54,6 +54,9 @@
 		B3EFEB8B2010445200ED4E01 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8A2010445200ED4E01 /* Blob.swift */; };
 		B3EFEB8C2010445200ED4E01 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8A2010445200ED4E01 /* Blob.swift */; };
 		B3EFEB8D2010445200ED4E01 /* Blob.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8A2010445200ED4E01 /* Blob.swift */; };
+		B3FABFF8201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */; };
+		B3FABFF9201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */; };
+		B3FABFFA201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */; };
 		B5AD85342FD3AE8AD410647B /* Pods_iOS_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FB9DB853A477A17D6BA62E9B /* Pods_iOS_Tests.framework */; };
 		C17DB3ACC3550E9E76586C39 /* Pods_tvOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AB47E4EF24958432BBB4196 /* Pods_tvOS.framework */; };
 		CA05AADB845E581CFACB4DB6 /* Pods_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD64EFEA8479B8482F8CF6F2 /* Pods_iOS.framework */; };
@@ -122,6 +125,7 @@
 		B39B9B781FBC0D0400A6C36C /* EventTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTarget.swift; sourceTree = "<group>"; };
 		B3EFEB8620103E2000ED4E01 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
 		B3EFEB8A2010445200ED4E01 /* Blob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
+		B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDelegateProxy.swift; sourceTree = "<group>"; };
 		B530B7342EAE33EBBC4946F5 /* Pods-iOS Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS Tests/Pods-iOS Tests.release.xcconfig"; sourceTree = "<group>"; };
 		BD64EFEA8479B8482F8CF6F2 /* Pods_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9D0209E2BFE454AE491C245 /* Pods-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-tvOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-tvOS/Pods-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -263,6 +267,7 @@
 				B3EFEB8620103E2000ED4E01 /* FormData.swift */,
 				B3EFEB8A2010445200ED4E01 /* Blob.swift */,
 				B38D40A31FE20A17005F82AE /* Extensions */,
+				B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */,
 				B39B9B5F1FBBF80300A6C36C /* Supporting Files */,
 			);
 			path = Source;
@@ -841,6 +846,7 @@
 				B38D40A91FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5C1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B6F1FBBFF1100A6C36C /* XMLHttpRequest.swift in Sources */,
+				B3FABFF8201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8B2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B791FBC0D0400A6C36C /* EventTarget.swift in Sources */,
 				B3EFEB8720103E2000ED4E01 /* FormData.swift in Sources */,
@@ -868,6 +874,7 @@
 				B38D40AA1FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5D1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B701FBBFF1100A6C36C /* XMLHttpRequest.swift in Sources */,
+				B3FABFF9201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8C2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B7A1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
 				B3EFEB8820103E2000ED4E01 /* FormData.swift in Sources */,
@@ -895,6 +902,7 @@
 				B38D40AB1FE20A43005F82AE /* Timers.swift in Sources */,
 				B39B9B5E1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift in Sources */,
 				B39B9B711FBBFF1100A6C36C /* XMLHttpRequest.swift in Sources */,
+				B3FABFFA201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8D2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B7B1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
 				B3EFEB8920103E2000ED4E01 /* FormData.swift in Sources */,
