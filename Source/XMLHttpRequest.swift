@@ -386,6 +386,8 @@ extension XMLHttpRequest: URLSessionDataDelegate {
             readyState = .LOADING
         }
         
+        dispatchEvent("progress")
+        
     }
     
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Swift.Void) {
