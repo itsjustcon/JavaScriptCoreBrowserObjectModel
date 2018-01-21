@@ -323,10 +323,6 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
     //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didReceive: \(challenge), completionHandler: \(completionHandler) )")
     //}
     
-    //public func urlSession(_ session: URLSession, task: URLSessionTask, needNewBodyStream completionHandler: @escaping (InputStream?) -> Swift.Void) {
-    //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), needNewBodyStream completionHandler: \(completionHandler) )")
-    //}
-    
     public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didSendBodyData bytesSent: \(bytesSent), totalBytesSent: \(totalBytesSent), totalBytesExpectedToSend: \(totalBytesExpectedToSend) )")
     }
