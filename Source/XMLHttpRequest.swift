@@ -155,6 +155,9 @@ import JavaScriptCore
         
         let dataTask = _urlSession.dataTask(with: _request!) /*{ (data, response, error) in
             print("_dataTask callback!!!")
+            print("  data: \(data.debugDescription)")
+            print("  response: \(response.debugDescription)")
+            print("  error: \(error.debugDescription)")
             //self.readyState = .DONE
         }*/
         dataTask.resume()
@@ -242,6 +245,7 @@ public typealias XMLHttpRequestStatus = Int
     
     public typealias RawValue = String
     public var rawValue: RawValue {
+        print("XMLHttpRequestResponseType rawValue #get")
         switch self {
         case .none:
             return ""
@@ -258,6 +262,7 @@ public typealias XMLHttpRequestStatus = Int
         }
     }
     public init?(rawValue: RawValue) {
+        print("XMLHttpRequestResponseType init(rawValue: \(rawValue)")
         switch rawValue {
         case "arraybuffer":
             self = .arraybuffer
