@@ -347,6 +347,7 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
             dispatchEvent("error")
         }
         
+        dispatchEvent("load")
         dispatchEvent("loadend")
         
     }
