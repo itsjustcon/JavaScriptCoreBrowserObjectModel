@@ -80,9 +80,9 @@ import JavaScriptCore
     
     public override required init() {
         super.init()
-        if let context = JSContext.current() {
-            context.virtualMachine.addManagedReference(self, withOwner: context)
-        }
+        //if let context = JSContext.current() {
+        //    context.virtualMachine.addManagedReference(self, withOwner: context)
+        //}
     }
     
     deinit {
