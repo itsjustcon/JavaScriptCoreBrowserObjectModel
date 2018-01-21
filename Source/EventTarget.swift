@@ -61,18 +61,38 @@ import JavaScriptCore
     @discardableResult
     public func dispatchEvent(_ event: String!) -> Bool {
         if let eventListener = value(forKey: "on\(String(stringLiteral: event))") as? EventListener {
-            eventListener.value.call(withArguments: [])
+            //eventListener.value.call(withArguments: [])
+            let listener = eventListener.value!
+            let thisObject = JSValue(object: self, in: listener.context)!
+            JSObjectCallAsFunction(listener.context.jsGlobalContextRef, listener.jsValueRef, thisObject.jsValueRef, 0, nil, nil)
         }
         if let eventListeners = _eventListeners[event] {
             eventListeners.forEach({ (eventListener, options) in
-                eventListener.value.call(withArguments: [])
+                //eventListener.value.call(withArguments: [])
+                let listener = eventListener.value!
+                let thisObject = JSValue(object: self, in: listener.context)!
+                JSObjectCallAsFunction(listener.context.jsGlobalContextRef, listener.jsValueRef, thisObject.jsValueRef, 0, nil, nil)
             })
             while let removeIdx = eventListeners.index(where: { $0.options?.once == true }) {
-                self.removeEventListener(event, removeIdx)
+                removeEventListener(event, removeIdx)
             }
         }
         return true
     }
+    
+    /*
+    private func invokeEventListener(_ eventListener: EventListener, arguments: [JSValue] = []) -> Any? {
+        //eventListener.value.call(withArguments: arguments)
+        let listener = eventListener.value!
+        let thisObject = JSValue(object: self, in: listener.context)!
+        JSObjectCallAsFunction(listener.context.jsGlobalContextRef, listener.jsValueRef, thisObject.jsValueRef, 0, nil, nil)
+        //let args = arguments.map { $0.jsValueRef }
+        let args = JSValue(object: arguments, in: listener.context)
+        let argsPtr: UnsafePointer<JSValueRef?> = (args != nil ? &(args!.jsValueRef) : nil)
+        JSObjectCallAsFunction(<#T##ctx: JSContextRef!##JSContextRef!#>, <#T##object: JSObjectRef!##JSObjectRef!#>, <#T##thisObject: JSObjectRef!##JSObjectRef!#>, <#T##argumentCount: Int##Int#>, <#T##arguments: UnsafePointer<JSValueRef?>!##UnsafePointer<JSValueRef?>!#>, <#T##exception: UnsafeMutablePointer<JSValueRef?>!##UnsafeMutablePointer<JSValueRef?>!#>)
+        let retVal = JSObjectCallAsFunction(<#T##ctx: JSContextRef!##JSContextRef!#>, <#T##object: JSObjectRef!##JSObjectRef!#>, <#T##thisObject: JSObjectRef!##JSObjectRef!#>, arguments.count, args?.jsValueRef, nil)
+    }
+    */
     
 }
 
