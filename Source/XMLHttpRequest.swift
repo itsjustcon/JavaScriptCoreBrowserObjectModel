@@ -13,7 +13,8 @@ import JavaScriptCore
     var readyState: XMLHttpRequestReadyState { get }
     var response: Any? { get }
     var responseText: String? { get }
-    var responseType: XMLHttpRequestResponseType { get }
+    var responseType: String { get set }
+    //var responseType: XMLHttpRequestResponseType { get set }
     //var responseType: String { get }
     var responseURL: String? { get }
     //var responseXML: Any? { get }
@@ -51,7 +52,6 @@ import JavaScriptCore
     
     public var response: Any?
     public var responseText: String?
-    public var responseType: XMLHttpRequestResponseType = .none //.text // NOTE: `.none` >> `.text`
     public var responseURL: String?
     //public var responseXML: Any?
     
@@ -234,6 +234,7 @@ public typealias XMLHttpRequestStatus = Int
     case DONE = 4
 }
 
+/*
 @objc public enum XMLHttpRequestResponseType: Int, RawRepresentable {
     
     case none// = ""
@@ -279,6 +280,15 @@ public typealias XMLHttpRequestStatus = Int
         }
     }
     
+}
+*/
+public enum XMLHttpRequestResponseType: String {
+    case none = ""
+    case arraybuffer
+    case blob
+    case document
+    case json
+    case text
 }
 
 
