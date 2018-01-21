@@ -50,13 +50,51 @@ import JavaScriptCore
         }
     }
     
-    public var response: Any?
-    public var responseText: String?
-    public var responseURL: String?
+    public var response: Any? {
+        print("XMLHttpRequest response #get")
+        print("  responseType: \(responseType)")
+        //print("  responseType: \(responseType.rawValue)")
+        // can be: ArrayBuffer, Blob, Document, Object, or String depending on `responseType`
+        guard let _responseData = _responseData else { return nil }
+        switch responseType {
+        //case .arraybuffer:
+        case "arraybuffer":
+            return nil
+        //case .blob:
+        case "blob":
+            //return Blob(_responseData)
+            return nil
+        //case .document:
+        case "document":
+            return nil
+        //case .json:
+        case "json":
+            return try? JSONSerialization.jsonObject(with: _responseData)
+        //case .text, .none:
+        //case "text", "none"
+        default:
+            //return String(data: _responseData, encoding: .utf8)
+            return responseText
+        }
+    }
+    public var responseText: String? {
+        guard let _responseData = _responseData else { return nil }
+        return String(data: _responseData, encoding: .utf8)
+    }
+    public var responseType: String = ""
+    //public var responseType: XMLHttpRequestResponseType = .none //.text // NOTE: `.none` >> `.text`
+    public var responseURL: String? {
+        return _dataTask?.response?.url?.absoluteString
+    }
     //public var responseXML: Any?
     
-    public var status: XMLHttpRequestStatus = 0 // read-only
-    public var statusText: String? // read-only
+    public var status: XMLHttpRequestStatus { // read-only
+        return _response?.statusCode ?? 0
+    }
+    public var statusText: String? { // read-only
+        guard status != 0 else { return nil }
+        return HTTPURLResponse.localizedString(forStatusCode: status)
+    }
     
     public var timeout: Int = 0
     
@@ -70,7 +108,10 @@ import JavaScriptCore
     private lazy var _urlSession: URLSession = URLSession(configuration: /*.default*/.ephemeral, delegate: URLSessionDelegateProxy(), delegateQueue: nil)
     //private lazy var _urlSession: URLSession = URLSession(configuration: .background(withIdentifier: "JavaScriptCoreBrowserObjectModel.XMLHttpRequest"), delegate: URLSessionDelegateProxy(), delegateQueue: nil)
     private var _requestHeaders = [String: String]()
-    private var _responseHeaders = [String: String]()
+    //private var _responseHeaders = [String: String]()
+    private var _responseHeaders: [String: String] {
+        return (_response?.allHeaderFields as? [String: String]) ?? [:]
+    }
     private var _async: Bool = true
     private var _user: String?
     private var _password: String?
@@ -100,11 +141,10 @@ import JavaScriptCore
         
         _dataTask?.cancel()
         
-        status = 0
+        //status = 0
         readyState = .DONE
         
         dispatchEvent("abort")
-        
     }
     
     public func getAllResponseHeaders() -> String? {
@@ -377,9 +417,13 @@ extension XMLHttpRequest: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Swift.Void) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(completionHandler) )")
         
-        if let httpResponse = response as? HTTPURLResponse {
-            status = httpResponse.statusCode
-            _responseHeaders = (httpResponse.allHeaderFields as? [String: String]) ?? [:]
+        _responseData = Data()
+        //_responseData = Data(count: Int(response.expectedContentLength))
+        
+        //if let httpResponse = response as? HTTPURLResponse {
+        if response is HTTPURLResponse {
+            //status = httpResponse.statusCode
+            //_responseHeaders = (httpResponse.allHeaderFields as? [String: String]) ?? [:]
             readyState = .HEADERS_RECEIVED
         }
         
