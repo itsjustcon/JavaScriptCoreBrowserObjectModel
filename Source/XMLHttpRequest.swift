@@ -75,8 +75,12 @@ import JavaScriptCore
     private var _user: String?
     private var _password: String?
     
-    private var _request: URLRequest?
     private var _dataTask: URLSessionDataTask?
+    private var _request: URLRequest?
+    private var _response: HTTPURLResponse? {
+        return _dataTask?.response as? HTTPURLResponse
+    }
+    private var _responseData: Data?
     
     public override required init() {
         super.init()
@@ -129,6 +133,8 @@ import JavaScriptCore
         _async = async
         _user = user
         _password = password
+        
+        _responseData = nil
         
         readyState = .OPENED
     }
@@ -392,6 +398,8 @@ extension XMLHttpRequest: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
+        
+        _responseData?.append(data)
         
         if readyState == .HEADERS_RECEIVED {
             readyState = .LOADING
