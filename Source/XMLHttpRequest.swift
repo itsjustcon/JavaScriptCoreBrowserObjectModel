@@ -67,11 +67,8 @@ import JavaScriptCore
     
     // MARK: Internal Variables
     //private var _urlSession: URLSession = URLSession.shared
-    private lazy var _urlSession: URLSession = {
-        //return URLSession(configuration: /*.default*/.ephemeral, delegate: self, delegateQueue: nil)
-        return URLSession(configuration: /*.default*/.ephemeral, delegate: URLSessionDelegateProxy(target: self), delegateQueue: nil)
-        //return URLSession(configuration: .background(withIdentifier: "JavaScriptCoreBrowserObjectModel.XMLHttpRequest"), delegate: self, delegateQueue: nil)
-    }()
+    private lazy var _urlSession: URLSession = URLSession(configuration: /*.default*/.ephemeral, delegate: URLSessionDelegateProxy(), delegateQueue: nil)
+    //private lazy var _urlSession: URLSession = URLSession(configuration: .background(withIdentifier: "JavaScriptCoreBrowserObjectModel.XMLHttpRequest"), delegate: URLSessionDelegateProxy(), delegateQueue: nil)
     private var _requestHeaders = [String: String]()
     private var _responseHeaders = [String: String]()
     private var _async: Bool = true
@@ -90,7 +87,7 @@ import JavaScriptCore
     
     deinit {
         print("XMLHttpRequest deinit")
-        //(_urlSession.delegate as? WeakURLSessionDelegate)?.target = nil
+        (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
         _urlSession.invalidateAndCancel()
     }
     
@@ -153,6 +150,8 @@ import JavaScriptCore
         if body != nil && body!.isString {
             _request!.httpBody = body!.toString().data(using: .utf8)
         }
+        
+        (_urlSession.delegate as! URLSessionDelegateProxy).target = self
         
         let dataTask = _urlSession.dataTask(with: _request!) /*{ (data, response, error) in
             print("_dataTask callback!!!")
@@ -334,6 +333,8 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
+        
+        (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
         
         readyState = .DONE
         
