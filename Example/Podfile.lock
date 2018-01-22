@@ -1,0 +1,16 @@
+PODS:
+  - JavaScriptCoreBrowserObjectModel (0.1.0)
+
+DEPENDENCIES:
+  - JavaScriptCoreBrowserObjectModel (from `..`)
+
+EXTERNAL SOURCES:
+  JavaScriptCoreBrowserObjectModel:
+    :path: ..
+
+SPEC CHECKSUMS:
+  JavaScriptCoreBrowserObjectModel: 5d051117d3b021b5453d920d7f88802c06095aa7
+
+PODFILE CHECKSUM: aeabeed04f794561e6fbf685c8949df8f61edd77
+
+COCOAPODS: 1.3.1

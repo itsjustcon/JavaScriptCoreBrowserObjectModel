@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!--<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">-->
+  <title>Editor</title>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+        /* Con's Edits */
+        position: relative;
+        width: 100vw;
+        height: 100vh;
+        margin: 0 !important;
+    }
+
+    #editor {
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<pre id="editor">
+
+</pre>
+
+<script src="js-libs/ace-editor/src/ace.js" type="text/javascript" charset="utf-8"></script>
+<!--<script src="js-libs/ace-editor/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>-->
+<script>
+    var editor = ace.edit('editor');
+    //var editor = ace.edit('editor-container');
+    editor.setTheme('ace/theme/monokai');
+    editor.getSession().setMode('ace/mode/javascript');
+
+    editor.$blockScrolling = Infinity;
+
+    editor.setOptions({ // @see: https://github.com/ajaxorg/ace/wiki/Configuring-Ace
+        //autoScrollEditorIntoView: true,
+        //cursorStyle: 'ace', // ace|slim|smooth|wide,
+        displayIndentGuides: true,
+        //enableBasicAutocompletion: true,
+        //enableLiveAutocompletion: true,
+        enableMultiselect: false,
+        //enableSnippets: true,
+        highlightActiveLine: true,
+        highlightGutterLine: true,
+        //scrollPastEnd: false,
+        showFoldWidgets: true,
+        //showInvisibles: true,
+        showLineNumbers: true,
+        showGutter: true,
+        tabSize: 4,
+        useSoftTabs: true,
+        /*
+        onLoad: function (_editor) {
+            console.log('editor onLoad()');
+            // This is to remove following warning message on console:
+            // Automatically scrolling cursor into view after selection change this will be disabled in the next version
+            // set editor.$blockScrolling = Infinity to disable this message
+            _editor.$blockScrolling = 1;
+        },
+        */
+    });
+
+    /*
+    let session = editor.getSession();
+
+    session.on('change', function () {
+        console.log('session #change');
+        //textarea.val(editor.getSession().getValue());
+        //textarea.trigger('change');
+        window.webkit.messageHandlers.didChange.postMessage('');
+    });
+
+    //editor.renderer.gutterWidth // 41
+
+    editor.renderer.once('afterRender', function () {
+        console.log('renderer #afterRender');
+        window.webkit.messageHandlers.didFinishSetup.postMessage('');
+    });
+
+    // Experimental Document stuff
+
+    let doc = session.getDocument();
+    doc.on('change', function () {
+        console.log('doc #change');
+    });
+    */
+
+</script>
+
+</body>
+</html>
