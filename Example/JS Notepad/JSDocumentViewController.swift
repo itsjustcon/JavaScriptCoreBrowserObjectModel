@@ -247,54 +247,6 @@ extension UIScrollView {
 
 
 
-
-
-
-
-extension JSValue {
-    
-    var isFunction: Bool {
-        guard isObject else { return false }
-        return JSObjectIsFunction(context.jsGlobalContextRef, jsValueRef)
-    }
-    var isError: Bool {
-        guard isObject else { return false }
-        let JSError = context.objectForKeyedSubscript("Error")!
-        guard JSError.isObject else { return false }
-        var jsException: JSValueRef? = nil
-        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSError.jsValueRef, &jsException)
-    }
-    var isPromise: Bool {
-        guard isObject else { return false }
-        let JSPromise = context.objectForKeyedSubscript("Promise")!
-        guard JSPromise.isObject else { return false }
-        var jsException: JSValueRef? = nil
-        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSPromise.jsValueRef, &jsException)
-        //return forProperty("then").isFunction
-    }
-    
-    @discardableResult
-    func callAsync(withArguments arguments: [Any]!, completionHandler: @escaping (JSValue?, JSValue?) -> Void) -> JSValue! {
-        var retVal = call(withArguments: arguments)!
-        if retVal.isPromise {
-            let fulfilledHandler: @convention(block) (JSValue?) -> Void = { value in
-                completionHandler(value, nil)
-            }
-            let rejectedHandler: @convention(block) (JSValue?/*Error*/) -> Void = { error in
-                completionHandler(nil, error)
-            }
-            //retVal = retVal.invokeMethod("then", withArguments: [ fulfilledHandler, rejectedHandler ])
-            retVal = retVal.invokeMethod("then", withArguments: [ JSValue(object: fulfilledHandler, in: context), JSValue(object: rejectedHandler, in: context) ])
-        } else {
-            completionHandler(retVal, nil)
-        }
-        return retVal
-    }
-    
-}
-
-
-
 class JSContext2: JSContext {
     deinit {
         print("JSContext2 deinit")
