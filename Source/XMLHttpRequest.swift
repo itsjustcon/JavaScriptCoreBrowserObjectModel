@@ -41,7 +41,7 @@ import JavaScriptCore
 //}
 
 @objc public class XMLHttpRequest: /*NSObject*/EventTarget, XMLHttpRequestJSProtocol {
-    
+
     public var readyState: XMLHttpRequestReadyState = .UNSENT { // read-only
         didSet {
             //onreadystatechange?()
@@ -49,7 +49,7 @@ import JavaScriptCore
             dispatchEvent("readystatechange")
         }
     }
-    
+
     public var response: Any? {
         print("XMLHttpRequest response #get")
         print("  responseType: \(responseType)")
@@ -87,7 +87,7 @@ import JavaScriptCore
         return _dataTask?.response?.url?.absoluteString
     }
     //public var responseXML: Any?
-    
+
     public var status: XMLHttpRequestStatus { // read-only
         return _response?.statusCode ?? 0
     }
@@ -95,14 +95,14 @@ import JavaScriptCore
         guard status != 0 else { return nil }
         return HTTPURLResponse.localizedString(forStatusCode: status)
     }
-    
+
     public var timeout: Int = 0
-    
+
     //public var upload: XMLHttpRequestUpload // read-only
-    
+
     public var withCredentials: Bool = false
     //public var withCredentials: Bool { return (_user != nil && _password != nil) } // read-only
-    
+
     // MARK: Internal Variables
     //private var _urlSession: URLSession = URLSession.shared
     private lazy var _urlSession: URLSession = URLSession(configuration: /*.default*/.ephemeral, delegate: URLSessionDelegateProxy(), delegateQueue: nil)
@@ -115,38 +115,38 @@ import JavaScriptCore
     private var _async: Bool = true
     private var _user: String?
     private var _password: String?
-    
+
     private var _dataTask: URLSessionDataTask?
     private var _request: URLRequest?
     private var _response: HTTPURLResponse? {
         return _dataTask?.response as? HTTPURLResponse
     }
     private var _responseData: Data?
-    
+
     public override required init() {
         super.init()
         //if let context = JSContext.current() {
         //    context.virtualMachine.addManagedReference(self, withOwner: context)
         //}
     }
-    
+
     deinit {
         print("XMLHttpRequest deinit")
         (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
         _urlSession.invalidateAndCancel()
     }
-    
+
     public func abort() -> Void {
         print("XMLHttpRequest abort()")
-        
+
         _dataTask?.cancel()
-        
+
         //status = 0
         readyState = .DONE
-        
+
         dispatchEvent("abort")
     }
-    
+
     public func getAllResponseHeaders() -> String? {
         guard readyState.rawValue >= XMLHttpRequestReadyState.HEADERS_RECEIVED.rawValue,
             _responseHeaders.count > 0
@@ -166,29 +166,29 @@ import JavaScriptCore
 
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String? = nil, _ password: String? = nil) -> Void {
         print("XMLHttpRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
-        
+
         _request = URLRequest(url: URL(string: url)!)
         //_request = URLRequest(url: URL(string: url)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(timeout))
         _request!.httpMethod = method
         _async = async
         _user = user
         _password = password
-        
+
         _responseData = nil
-        
+
         readyState = .OPENED
     }
-    
+
     public func overrideMimeType(_ mimetype: String!) -> Void {
         print("XMLHttpRequest overrideMimeType( mimetype: \(mimetype) )")
     }
-    
+
     public func send(_ body: JSValue?) -> Void {
         print("XMLHttpRequest send( \(String(describing: body)) )")
-        
+
         //JSValueProtect(JSContext.current()!.jsGlobalContextRef, JSContext.currentThis().jsValueRef)
         //JSContext.current().virtualMachine.addManagedReference(self, withOwner: JSContext.current().jsGlobalContextRef)
-        
+
         for (header, value) in _requestHeaders {
             _request!.setValue(value, forHTTPHeaderField: header)
         }
@@ -196,9 +196,9 @@ import JavaScriptCore
         if body != nil && body!.isString {
             _request!.httpBody = body!.toString().data(using: .utf8)
         }
-        
+
         (_urlSession.delegate as! URLSessionDelegateProxy).target = self
-        
+
         let dataTask = _urlSession.dataTask(with: _request!) /*{ (data, response, error) in
             print("_dataTask callback!!!")
             print("  data: \(data.debugDescription)")
@@ -209,43 +209,178 @@ import JavaScriptCore
         dataTask.resume()
         _dataTask = dataTask
     }
-    
+
     public func setRequestHeader(_ header: String!, _ value: String!) -> Void {
         //_request.setValue(value, forHTTPHeaderField: header)
         _requestHeaders[header] = value
     }
-    
+
     //
     // MARK: - XMLHttpRequestEventTarget -
     //
-    
-    public var onabort: EventListener?
-    public var onerror: EventListener?
-    public var onload: EventListener?
-    public var onloadstart: EventListener?
-    public var onprogress: EventListener?
-    public var ontimeout: EventListener?
-    public var onloadend: EventListener?
-    
+
+    public var onabort: EventListener? {
+        get {
+            return _onabort?.value
+        }
+        set(onabort) {
+            if let onabort = onabort, onabort.isFunction {
+                _onabort = JSManagedValue(value: onabort)
+                onabort.context.virtualMachine.addManagedReference(_onabort, withOwner: self)
+                //_onabort = JSManagedValue(value: onabort, andOwner: self)
+            } else {
+                _onabort = nil
+            }
+        }
+    }
+    public var onerror: EventListener? {
+        get {
+            return _onerror?.value
+        }
+        set(onerror) {
+            if let onerror = onerror, onerror.isFunction {
+                _onerror = JSManagedValue(value: onerror)
+                onerror.context.virtualMachine.addManagedReference(_onerror, withOwner: self)
+                //_onerror = JSManagedValue(value: onerror, andOwner: self)
+            } else {
+                _onerror = nil
+            }
+        }
+    }
+    public var onload: EventListener? {
+        get {
+            return _onload?.value
+        }
+        set(onload) {
+            if let onload = onload, onload.isFunction {
+                _onload = JSManagedValue(value: onload)
+                onload.context.virtualMachine.addManagedReference(_onload, withOwner: self)
+                //_onload = JSManagedValue(value: onload, andOwner: self)
+            } else {
+                _onload = nil
+            }
+        }
+    }
+    public var onloadstart: EventListener? {
+        get {
+            return _onloadstart?.value
+        }
+        set(onloadstart) {
+            if let onloadstart = onloadstart, onloadstart.isFunction {
+                _onloadstart = JSManagedValue(value: onloadstart)
+                onloadstart.context.virtualMachine.addManagedReference(_onloadstart, withOwner: self)
+                //_onloadstart = JSManagedValue(value: onloadstart, andOwner: self)
+            } else {
+                _onloadstart = nil
+            }
+        }
+    }
+    public var onprogress: EventListener? {
+        get {
+            return _onprogress?.value
+        }
+        set(onprogress) {
+            if let onprogress = onprogress, onprogress.isFunction {
+                _onprogress = JSManagedValue(value: onprogress)
+                onprogress.context.virtualMachine.addManagedReference(_onprogress, withOwner: self)
+                //_onprogress = JSManagedValue(value: onprogress, andOwner: self)
+            } else {
+                _onprogress = nil
+            }
+        }
+    }
+    public var ontimeout: EventListener? {
+        get {
+            return _ontimeout?.value
+        }
+        set(ontimeout) {
+            if let ontimeout = ontimeout, ontimeout.isFunction {
+                _ontimeout = JSManagedValue(value: ontimeout)
+                ontimeout.context.virtualMachine.addManagedReference(_ontimeout, withOwner: self)
+                //_ontimeout = JSManagedValue(value: ontimeout, andOwner: self)
+            } else {
+                _ontimeout = nil
+            }
+        }
+    }
+    public var onloadend: EventListener? {
+        get {
+            return _onloadend?.value
+        }
+        set(onloadend) {
+            if let onloadend = onloadend, onloadend.isFunction {
+                _onloadend = JSManagedValue(value: onloadend)
+                onloadend.context.virtualMachine.addManagedReference(_onloadend, withOwner: self)
+                //_onloadend = JSManagedValue(value: onloadend, andOwner: self)
+            } else {
+                _onloadend = nil
+            }
+        }
+    }
+
+    private var _onabort: EventListenerRef? {
+        willSet {
+            //if let prevValue = _onabort?.value {
+            //    prevValue.context.virtualMachine.removeManagedReference(_onabort!, withOwner: self)
+            //}
+            _onabort?.value.context.virtualMachine.removeManagedReference(_onabort, withOwner: self)
+        }
+    }
+    private var _onerror: EventListenerRef? {
+        willSet {
+            _onerror?.value.context.virtualMachine.removeManagedReference(_onerror, withOwner: self)
+        }
+    }
+    private var _onload: EventListenerRef? {
+        willSet {
+            _onload?.value.context.virtualMachine.removeManagedReference(_onload, withOwner: self)
+        }
+    }
+    private var _onloadstart: EventListenerRef? {
+        willSet {
+            _onloadstart?.value.context.virtualMachine.removeManagedReference(_onloadstart, withOwner: self)
+        }
+    }
+    private var _onprogress: EventListenerRef? {
+        willSet {
+            _onprogress?.value.context.virtualMachine.removeManagedReference(_onprogress, withOwner: self)
+        }
+    }
+    private var _ontimeout: EventListenerRef? {
+        willSet {
+            _ontimeout?.value.context.virtualMachine.removeManagedReference(_ontimeout, withOwner: self)
+        }
+    }
+    private var _onloadend: EventListenerRef? {
+        willSet {
+            _onloadend?.value.context.virtualMachine.removeManagedReference(_onloadend, withOwner: self)
+        }
+    }
+
     //
     // MARK: - Events -
     //
-    
-    public var onreadystatechange: EventListener?
-    // TODO: investigate the need for this:
-    //public var onreadystatechange: EventListener? {
-    //    //willSet {
-    //    //    if self.onreadystatechange != nil, let context = (JSContext.current() ?? listener.context) {
-    //    //        context.virtualMachine.removeManagedReference(self.onreadystatechange!, withOwner: self)
-    //    //    }
-    //    //}
-    //    didSet {
-    //        if self.onreadystatechange != nil, let context = (JSContext.current() ?? listener.context) {
-    //            context.virtualMachine.addManagedReference(self.onreadystatechange!, withOwner: self)
-    //        }
-    //    }
-    //}
-    
+
+    public var onreadystatechange: EventListener? {
+        get {
+            return _onreadystatechange?.value
+        }
+        set(onreadystatechange) {
+            if let onreadystatechange = onreadystatechange, onreadystatechange.isFunction {
+                _onreadystatechange = JSManagedValue(value: onreadystatechange)
+                onreadystatechange.context.virtualMachine.addManagedReference(_onreadystatechange, withOwner: self)
+                //_onreadystatechange = JSManagedValue(value: onreadystatechange, andOwner: self)
+            } else {
+                _onreadystatechange = nil
+            }
+        }
+    }
+    private var _onreadystatechange: EventListenerRef? {
+        willSet {
+            _onreadystatechange?.value.context.virtualMachine.removeManagedReference(_onreadystatechange, withOwner: self)
+        }
+    }
+
 }
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestEventTarget
@@ -261,7 +396,7 @@ import JavaScriptCore
 
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequestUpload
 @objc public protocol XMLHttpRequestUpload: JSExport {
-    
+
 }
 
 public typealias XMLHttpRequestStatus = Int
@@ -282,14 +417,14 @@ public typealias XMLHttpRequestStatus = Int
 
 /*
 @objc public enum XMLHttpRequestResponseType: Int, RawRepresentable {
-    
+
     case none// = ""
     case arraybuffer
     case blob
     case document
     case json
     case text
-    
+
     public typealias RawValue = String
     public var rawValue: RawValue {
         print("XMLHttpRequestResponseType rawValue #get")
@@ -325,7 +460,7 @@ public typealias XMLHttpRequestStatus = Int
             self = .none
         }
     }
-    
+
 }
 */
 public enum XMLHttpRequestResponseType: String {
@@ -346,115 +481,115 @@ public enum XMLHttpRequestResponseType: String {
 // MARK: URLSessionDelegate
 
 extension XMLHttpRequest: URLSessionDelegate {
-    
+
     //public func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
     //    print("XMLHttpRequest urlSession( session: \(session), didBecomeInvalidWithError: \(String(describing: error)) )")
     //}
-    
+
     //public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
     //    print("XMLHttpRequest urlSession( session: \(session), didReceive: \(challenge), completionHandler: \(completionHandler) )")
     //}
-    
+
     //public func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
     //    print("XMLHttpRequest urlSessionDidFinishEvents( forBackgroundURLSession: \(session) )")
     //}
-    
+
 }
 
 // MARK: URLSessionTaskDelegate
 
 extension XMLHttpRequest: URLSessionTaskDelegate {
-    
+
     //@available(iOS 11.0, *)
     //public func urlSession(_ session: URLSession, task: URLSessionTask, willBeginDelayedRequest request: URLRequest, completionHandler: @escaping (URLSession.DelayedRequestDisposition, URLRequest?) -> Swift.Void) {
     //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), willBeginDelayedRequest: \(request), completionHandler: \(completionHandler) )")
     //}
-    
+
     //@available(iOS 11.0, *)
     //public func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
     //    print("XMLHttpRequest urlSession( session: URLSession, taskIsWaitingForConnectivity: \(task) )")
     //}
-    
+
     //public func urlSession(_ session: URLSession, task: URLSessionTask, willPerformHTTPRedirection response: HTTPURLResponse, newRequest request: URLRequest, completionHandler: @escaping (URLRequest?) -> Swift.Void) {
     //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), willPerformHTTPRedirection: \(response), newRequest: \(request), completionHandler: \(completionHandler) )")
     //}
-    
+
     //public func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Swift.Void) {
     //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didReceive: \(challenge), completionHandler: \(completionHandler) )")
     //}
-    
+
     public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didSendBodyData bytesSent: \(bytesSent), totalBytesSent: \(totalBytesSent), totalBytesExpectedToSend: \(totalBytesExpectedToSend) )")
     }
-    
+
     //@available(iOS 10.0, *)
     //public func urlSession(_ session: URLSession, task: URLSessionTask, didFinishCollecting metrics: URLSessionTaskMetrics) {
     //    print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didFinishCollecting metrics: \(metrics) )")
     //}
-    
+
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
-        
+
         (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
-        
+
         readyState = .DONE
-        
+
         if error != nil {
             dispatchEvent("error")
         }
-        
+
         dispatchEvent("load")
         dispatchEvent("loadend")
-        
+
     }
-    
+
 }
 
 // MARK: URLSessionDataDelegate
 
 extension XMLHttpRequest: URLSessionDataDelegate {
-    
+
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Swift.Void) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(completionHandler) )")
-        
+
         _responseData = Data()
         //_responseData = Data(count: Int(response.expectedContentLength))
-        
+
         //if let httpResponse = response as? HTTPURLResponse {
         if response is HTTPURLResponse {
             //status = httpResponse.statusCode
             //_responseHeaders = (httpResponse.allHeaderFields as? [String: String]) ?? [:]
             readyState = .HEADERS_RECEIVED
         }
-        
+
         completionHandler(.allow)
-        
+
     }
-    
+
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome downloadTask: URLSessionDownloadTask) {
     //    print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didBecome downloadTask: \(downloadTask) )")
     //}
-    
+
     //@available(iOS 9.0, *)
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didBecome streamTask: URLSessionStreamTask) {
     //    print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didBecome streamTask: \(streamTask) )")
     //}
-    
+
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
-        
+
         _responseData?.append(data)
-        
+
         if readyState == .HEADERS_RECEIVED {
             readyState = .LOADING
         }
-        
+
         dispatchEvent("progress")
-        
+
     }
-    
+
     //public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, willCacheResponse proposedResponse: CachedURLResponse, completionHandler: @escaping (CachedURLResponse?) -> Swift.Void) {
     //    print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), willCacheResponse: \(proposedResponse), completionHandler: \(completionHandler) )")
     //}
-    
+
 }
