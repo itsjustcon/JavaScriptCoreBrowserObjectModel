@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.osx.deployment_target = '10.10'
   s.tvos.deployment_target = '9.0'
 
-  s.source_files = 'Source/*.swift'
+  s.source_files = 'Source/*.swift', 'Source/Extensions/*.swift'
 
   # s.resource_bundles = {
   #   'JavaScriptCoreBrowserObjectModel' => ['JavaScriptCoreBrowserObjectModel/Assets/*.png']
