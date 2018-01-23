@@ -67,7 +67,6 @@ class JSDocumentViewController: UIViewController {
         // XMLHttpRequest
         jsContext.setObject(XMLHttpRequest.self, forKeyedSubscript: "XMLHttpRequest" as (NSCopying & NSObjectProtocol))
         
-        /*
         // babel-polyfill
         let babelPolyfillUrl = Bundle(for: type(of: self)).url(forResource: "polyfill", withExtension: "js", subdirectory: "js-libs/babel-polyfill")!
         let babelPolyfill = try! String(contentsOf: babelPolyfillUrl)
@@ -77,7 +76,6 @@ class JSDocumentViewController: UIViewController {
         let fetchPolyfillUrl = Bundle(for: type(of: self)).url(forResource: "fetch", withExtension: "js", subdirectory: "js-libs/whatwg-fetch")!
         let fetchPolyfill = try! String(contentsOf: fetchPolyfillUrl)
         jsContext.evaluateScript(fetchPolyfill)
-        */
         
         return jsContext
     }
