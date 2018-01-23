@@ -9,10 +9,10 @@
 import JavaScriptCore
 import Foundation
 
-extension JSContext {
+public extension JSContext {
     
-    open func setObject(_ object: Any!, forKeyedSubscript key: String!) {
-        return self.setObject(object, forKeyedSubscript: key as (NSCopying & NSObjectProtocol))
-    }
+    //open func setObject(_ object: Any!, forKeyedSubscript key: String!) {
+    //    return self.setObject(object, forKeyedSubscript: key as (NSCopying & NSObjectProtocol))
+    //}
     
 }
