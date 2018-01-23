@@ -160,7 +160,7 @@ class JSDocumentViewController: UIViewController {
             mainFn = jsContext.objectForKeyedSubscript("main")
         }
         if mainFn.isFunction {
-            mainFn.callAsync(withArguments: []) { [unowned self, unowned jsContext] (result, error) in
+            mainFn.callAsync(withArguments: []) { [unowned self, weak jsContext] (result, error) in
                 DispatchQueue.main.async {
                     if let error = error/*, error.isError*/ {
                         print("    error: \(error.debugDescription)")
@@ -181,7 +181,7 @@ class JSDocumentViewController: UIViewController {
                     }
                     //self.currentJSContext = nil  // release context
                     //JSGlobalContextRelease(jsContext.jsGlobalContextRef)  // release context
-                    if self.currentJSContext === jsContext {
+                    if jsContext != nil, self.currentJSContext === jsContext {
                         self.currentJSContext = nil  // release context
                     }
                 }
