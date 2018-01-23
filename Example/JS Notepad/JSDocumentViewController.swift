@@ -39,6 +39,12 @@ class JSDocumentViewController: UIViewController {
         let jsContext = JSContext2()!
         jsContext.exceptionHandler = { [weak consoleTextView] (context, exception) in
             print("jsContext.exceptionHandler()\n\(String(describing: exception))")
+            print("  exception.isString: \(exception!.isString)")
+            print("  exception.isObject: \(exception!.isObject)")
+            print("  exception.isError: \(exception!.isError)")
+            if let exception = exception, exception.isObject {
+                print("\(exception.toObject())")
+            }
             consoleTextView?.text.append("\n[ERROR] \(exception?.debugDescription ?? "nil")\n\n")
         }
         
@@ -160,6 +166,14 @@ class JSDocumentViewController: UIViewController {
                 DispatchQueue.main.async {
                     if let error = error/*, error.isError*/ {
                         print("    error: \(error.debugDescription)")
+                        print("  error.isString: \(error.isString)")
+                        print("  error.isObject: \(error.isObject)")
+                        print("  error.isError: \(error.isError)")
+                        if error.isError {
+                            print("\(error.toObject())")
+                            //print("\(String(describing: error.value(forKey: "stack")))")
+                            print("\(String(describing: error.forProperty("stack")))")
+                        }
                         self.consoleTextView.text.append("\n[ERROR] \(error.debugDescription)\n\n")
                     } else if let result = result, !result.isUndefined, !result.isNull {
                         print("    result: \(String(describing: result))")
