@@ -142,3 +142,42 @@ public typealias RejectedHandler = @convention(block) (JSError) -> Void
     }
     
 }
+
+
+
+public extension JSValue {
+    
+    var isPromise: Bool {
+        guard isObject else { return false }
+        if isInstance(of: JSPromise.self) { return true }
+        /*
+        let JSNativePromise = context.objectForKeyedSubscript("Promise")!
+        guard JSNativePromise.isObject else { return false }
+        //var jsException: JSValueRef? = nil
+        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSNativePromise.jsValueRef, nil/*&jsException*/)
+        */
+        return (forProperty("then").isFunction && forProperty("catch").isFunction)
+    }
+    
+    func toPromise() -> JSPromise {
+        //guard isObject else { return nil }
+        if isPromise {
+            return toObjectOf(JSPromise.self) as! JSPromise
+        }
+        switch JSValueGetType(context.jsGlobalContextRef, jsValueRef) {
+        case kJSTypeBoolean:
+            return JSPromise.resolve(toBool())
+        case kJSTypeNumber:
+            return JSPromise.resolve(toNumber())
+        case kJSTypeString:
+            return JSPromise.resolve(toString())
+        case kJSTypeObject:
+            return JSPromise.resolve(toObject())
+        //case kJSTypeUndefined:
+        //case kJSTypeNull:
+        default:
+            return JSPromise.resolve(/*nil*/)
+        }
+    }
+    
+}

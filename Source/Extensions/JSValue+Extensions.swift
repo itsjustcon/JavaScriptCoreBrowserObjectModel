@@ -19,14 +19,6 @@ public extension JSValue {
         guard isObject else { return false }
         return JSObjectIsFunction(context.jsGlobalContextRef, jsValueRef)
     }
-    var isPromise: Bool {
-        guard isObject else { return false }
-        let JSPromise = context.objectForKeyedSubscript("Promise")!
-        guard JSPromise.isObject else { return false }
-        var jsException: JSValueRef? = nil
-        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSPromise.jsValueRef, &jsException)
-        //return forProperty("then").isFunction
-    }
     
     @discardableResult
     func callAsync(withArguments arguments: [Any]!, completionHandler: @escaping (JSValue?, JSValue?) -> Void) -> JSValue! {
