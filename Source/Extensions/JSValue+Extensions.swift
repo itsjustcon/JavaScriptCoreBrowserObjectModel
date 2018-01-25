@@ -15,6 +15,41 @@ public extension JSValue {
     //    return self.setObject(object, forKeyedSubscript: key as (NSCopying & NSObjectProtocol))
     //}
     
+    convenience init(_ value: Any!, in context: JSContext!) {
+        //guard let value = value else {
+        //    self.init(undefinedIn: context)
+        //    return
+        //}
+        switch value {
+        case let value as Bool:
+            self.init(bool: value, in: context)
+        case let value as Int32:
+            self.init(int32: value, in: context)
+        case let value as UInt32:
+            self.init(uInt32: value, in: context)
+        case let value as Double:
+            self.init(double: value, in: context)
+        case let value as CGRect:
+            self.init(rect: value, in: context)
+        case let value as CGSize:
+            self.init(size: value, in: context)
+        case let value as CGPoint:
+            self.init(point: value, in: context)
+        case let value as NSRange:
+            self.init(range: value, in: context)
+        case let value as Error:
+            self.init(newErrorFromMessage: value.localizedDescription, in: context)
+        //case let value as NSRegularExpression:
+        //    self.init(newRegularExpressionFromPattern: value.pattern, flags: ""/*value.options*/, in: context)
+        case let value as NSObjectProtocol:
+            self.init(object: value, in: context)
+        default:
+            //self.init()
+            self.init(undefinedIn: context)
+            //self.init(nullIn: context)
+        }
+    }
+    
     var isFunction: Bool {
         guard isObject else { return false }
         return JSObjectIsFunction(context.jsGlobalContextRef, jsValueRef)
