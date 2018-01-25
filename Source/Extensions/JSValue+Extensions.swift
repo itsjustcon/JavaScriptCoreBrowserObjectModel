@@ -19,13 +19,6 @@ public extension JSValue {
         guard isObject else { return false }
         return JSObjectIsFunction(context.jsGlobalContextRef, jsValueRef)
     }
-    var isError: Bool {
-        guard isObject else { return false }
-        let JSError = context.objectForKeyedSubscript("Error")!
-        guard JSError.isObject else { return false }
-        var jsException: JSValueRef? = nil
-        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSError.jsValueRef, &jsException)
-    }
     var isPromise: Bool {
         guard isObject else { return false }
         let JSPromise = context.objectForKeyedSubscript("Promise")!

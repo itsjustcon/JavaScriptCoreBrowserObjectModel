@@ -53,3 +53,23 @@ import JavaScriptCore
     
     
 }
+
+
+
+public extension JSValue {
+    
+    var isError: Bool {
+        guard isObject else { return false }
+        if isInstance(of: JSError.self) { return true }
+        let JSNativeError = context.objectForKeyedSubscript("Error")!
+        guard JSNativeError.isObject else { return false }
+        //var jsException: JSValueRef? = nil
+        //return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSNativeError.jsValueRef, &jsException)
+        return JSValueIsInstanceOfConstructor(context.jsGlobalContextRef, jsValueRef, JSNativeError.jsValueRef, nil)
+    }
+    
+    func toError() -> JSError {
+        return toObjectOf(JSError.self) as! JSError
+    }
+    
+}
