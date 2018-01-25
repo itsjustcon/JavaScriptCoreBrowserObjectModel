@@ -18,6 +18,9 @@
 		B379FEE51FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
 		B379FEE61FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
 		B379FEE71FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */; };
+		B380915B2016E20E000E5AD2 /* JSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380915A2016E20E000E5AD2 /* JSError.swift */; };
+		B380915C2016E20E000E5AD2 /* JSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380915A2016E20E000E5AD2 /* JSError.swift */; };
+		B380915D2016E20E000E5AD2 /* JSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = B380915A2016E20E000E5AD2 /* JSError.swift */; };
 		B38D40A51FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
 		B38D40A61FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
 		B38D40A71FE20A3C005F82AE /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = B38D40A41FE20A3C005F82AE /* Console.swift */; };
@@ -48,6 +51,9 @@
 		B39B9B791FBC0D0400A6C36C /* EventTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39B9B781FBC0D0400A6C36C /* EventTarget.swift */; };
 		B39B9B7A1FBC0D0400A6C36C /* EventTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39B9B781FBC0D0400A6C36C /* EventTarget.swift */; };
 		B39B9B7B1FBC0D0400A6C36C /* EventTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39B9B781FBC0D0400A6C36C /* EventTarget.swift */; };
+		B3EAE1762016E83E004373AB /* JSPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EAE1752016E83E004373AB /* JSPromise.swift */; };
+		B3EAE1772016E83E004373AB /* JSPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EAE1752016E83E004373AB /* JSPromise.swift */; };
+		B3EAE1782016E83E004373AB /* JSPromise.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EAE1752016E83E004373AB /* JSPromise.swift */; };
 		B3EFEB8720103E2000ED4E01 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8620103E2000ED4E01 /* FormData.swift */; };
 		B3EFEB8820103E2000ED4E01 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8620103E2000ED4E01 /* FormData.swift */; };
 		B3EFEB8920103E2000ED4E01 /* FormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3EFEB8620103E2000ED4E01 /* FormData.swift */; };
@@ -103,6 +109,7 @@
 		B34B78F51FE0DB1E00DA9A9B /* TestWebServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestWebServer.swift; sourceTree = "<group>"; };
 		B379FEE01FBD5440000B2BDC /* JSContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSContext+Extensions.swift"; sourceTree = "<group>"; };
 		B379FEE41FBD5E3B000B2BDC /* JSValue+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JSValue+Extensions.swift"; sourceTree = "<group>"; };
+		B380915A2016E20E000E5AD2 /* JSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSError.swift; sourceTree = "<group>"; };
 		B38D40A41FE20A3C005F82AE /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		B38D40A81FE20A43005F82AE /* Timers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timers.swift; sourceTree = "<group>"; };
 		B38D40AC1FE2206E005F82AE /* TimersTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimersTests.swift; sourceTree = "<group>"; };
@@ -123,6 +130,7 @@
 		B39B9B6E1FBBFF1100A6C36C /* XMLHttpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLHttpRequest.swift; sourceTree = "<group>"; };
 		B39B9B721FBC003600A6C36C /* XMLHttpRequestTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XMLHttpRequestTests.swift; sourceTree = "<group>"; };
 		B39B9B781FBC0D0400A6C36C /* EventTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTarget.swift; sourceTree = "<group>"; };
+		B3EAE1752016E83E004373AB /* JSPromise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSPromise.swift; sourceTree = "<group>"; };
 		B3EFEB8620103E2000ED4E01 /* FormData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormData.swift; sourceTree = "<group>"; };
 		B3EFEB8A2010445200ED4E01 /* Blob.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blob.swift; sourceTree = "<group>"; };
 		B3FABFF7201329B600C9D645 /* URLSessionDelegateProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionDelegateProxy.swift; sourceTree = "<group>"; };
@@ -260,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				B39B9B5B1FBBF7E400A6C36C /* JavaScriptCoreBrowserObjectModel.swift */,
+				B380915A2016E20E000E5AD2 /* JSError.swift */,
+				B3EAE1752016E83E004373AB /* JSPromise.swift */,
 				B38D40A41FE20A3C005F82AE /* Console.swift */,
 				B39B9B781FBC0D0400A6C36C /* EventTarget.swift */,
 				B38D40A81FE20A43005F82AE /* Timers.swift */,
@@ -841,6 +851,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE51FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B380915B2016E20E000E5AD2 /* JSError.swift in Sources */,
 				B38D40A51FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE11FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
 				B38D40A91FE20A43005F82AE /* Timers.swift in Sources */,
@@ -849,6 +860,7 @@
 				B3FABFF8201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8B2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B791FBC0D0400A6C36C /* EventTarget.swift in Sources */,
+				B3EAE1762016E83E004373AB /* JSPromise.swift in Sources */,
 				B3EFEB8720103E2000ED4E01 /* FormData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -869,6 +881,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE61FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B380915C2016E20E000E5AD2 /* JSError.swift in Sources */,
 				B38D40A61FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE21FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
 				B38D40AA1FE20A43005F82AE /* Timers.swift in Sources */,
@@ -877,6 +890,7 @@
 				B3FABFF9201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8C2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B7A1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
+				B3EAE1772016E83E004373AB /* JSPromise.swift in Sources */,
 				B3EFEB8820103E2000ED4E01 /* FormData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -897,6 +911,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B379FEE71FBD5E3B000B2BDC /* JSValue+Extensions.swift in Sources */,
+				B380915D2016E20E000E5AD2 /* JSError.swift in Sources */,
 				B38D40A71FE20A3C005F82AE /* Console.swift in Sources */,
 				B379FEE31FBD5440000B2BDC /* JSContext+Extensions.swift in Sources */,
 				B38D40AB1FE20A43005F82AE /* Timers.swift in Sources */,
@@ -905,6 +920,7 @@
 				B3FABFFA201329B600C9D645 /* URLSessionDelegateProxy.swift in Sources */,
 				B3EFEB8D2010445200ED4E01 /* Blob.swift in Sources */,
 				B39B9B7B1FBC0D0400A6C36C /* EventTarget.swift in Sources */,
+				B3EAE1782016E83E004373AB /* JSPromise.swift in Sources */,
 				B3EFEB8920103E2000ED4E01 /* FormData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
