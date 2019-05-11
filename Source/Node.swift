@@ -22,7 +22,7 @@ import JavaScriptCore
     var nodeValue: String? { get set }
     //var ownerDocument: Document? { get }
     var parentNode: Node? { get }
-    //var parentElement: Element? { get }
+    var parentElement: Element? { get }
     var previousSibling: Node? { get }
     var textContent: String? { get set }
     func appendChild(_ child: Node) -> Node
