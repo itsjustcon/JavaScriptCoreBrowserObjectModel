@@ -48,18 +48,18 @@ import JavaScriptCore
     //
     
     // Timeout
-    open static let setTimeout: @convention(block) (JSValue, Double) -> UInt = { (callback, delay) in
+    public static let setTimeout: @convention(block) (JSValue, Double) -> UInt = { (callback, delay) in
         return createTimer(callback: callback, delay: delay, repeats: false)
     }
-    open static let clearTimeout: @convention(block) (UInt) -> Void = { (identifier) in
+    public static let clearTimeout: @convention(block) (UInt) -> Void = { (identifier) in
         invalidateTimer(identifier)
     }
     
     // Interval
-    open static let setInterval: @convention(block) (JSValue, Double) -> UInt = { (callback, delay) in
+    public static let setInterval: @convention(block) (JSValue, Double) -> UInt = { (callback, delay) in
         return createTimer(callback: callback, delay: delay, repeats: true)
     }
-    open static let clearInterval: @convention(block) (UInt) -> Void = { (identifier) in
+    public static let clearInterval: @convention(block) (UInt) -> Void = { (identifier) in
         invalidateTimer(identifier)
     }
     
