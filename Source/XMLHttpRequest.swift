@@ -51,8 +51,8 @@ import JavaScriptCore
     }
 
     public var response: Any? {
-        print("XMLHttpRequest response #get")
-        print("  responseType: \(responseType)")
+        //print("XMLHttpRequest response #get")
+        //print("  responseType: \(responseType)")
         //print("  responseType: \(responseType.rawValue)")
         // can be: ArrayBuffer, Blob, Document, Object, or String depending on `responseType`
         guard let _responseData = _responseData else { return nil }
@@ -131,13 +131,13 @@ import JavaScriptCore
     }
 
     deinit {
-        print("XMLHttpRequest deinit")
+        //print("XMLHttpRequest deinit")
         (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
         _urlSession.invalidateAndCancel()
     }
 
     public func abort() -> Void {
-        print("XMLHttpRequest abort()")
+        //print("XMLHttpRequest abort()")
 
         _dataTask?.cancel()
 
@@ -165,7 +165,7 @@ import JavaScriptCore
     }
 
     public func open(_ method: String!, _ url: String!, _ async: Bool = true, _ user: String? = nil, _ password: String? = nil) -> Void {
-        print("XMLHttpRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
+        //print("XMLHttpRequest open( method: \(method), url: \(url), async: \(async), user: \(String(describing: user)), password: \(String(describing: password)) )")
 
         _request = URLRequest(url: URL(string: url)!)
         //_request = URLRequest(url: URL(string: url)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: TimeInterval(timeout))
@@ -180,11 +180,11 @@ import JavaScriptCore
     }
 
     public func overrideMimeType(_ mimetype: String!) -> Void {
-        print("XMLHttpRequest overrideMimeType( mimetype: \(mimetype) )")
+        //print("XMLHttpRequest overrideMimeType( mimetype: \(String(describing: mimetype)) )")
     }
 
     public func send(_ body: JSValue?) -> Void {
-        print("XMLHttpRequest send( \(String(describing: body)) )")
+        //print("XMLHttpRequest send( \(String(describing: body)) )")
 
         //JSValueProtect(JSContext.current()!.jsGlobalContextRef, JSContext.currentThis().jsValueRef)
         //JSContext.current().virtualMachine.addManagedReference(self, withOwner: JSContext.current().jsGlobalContextRef)
@@ -519,7 +519,7 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
     //}
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
-        print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didSendBodyData bytesSent: \(bytesSent), totalBytesSent: \(totalBytesSent), totalBytesExpectedToSend: \(totalBytesExpectedToSend) )")
+        //print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didSendBodyData bytesSent: \(bytesSent), totalBytesSent: \(totalBytesSent), totalBytesExpectedToSend: \(totalBytesExpectedToSend) )")
     }
 
     //@available(iOS 10.0, *)
@@ -528,7 +528,7 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
     //}
 
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
+        //print("XMLHttpRequest urlSession( session: URLSession, task: \(task), didCompleteWithError: \(String(describing: error)) )")
 
         (_urlSession.delegate as! URLSessionDelegateProxy).target = nil
 
@@ -550,7 +550,7 @@ extension XMLHttpRequest: URLSessionTaskDelegate {
 extension XMLHttpRequest: URLSessionDataDelegate {
 
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Swift.Void) {
-        print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(completionHandler) )")
+        //print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(response), completionHandler: \(String(describing: completionHandler)) )")
 
         _responseData = Data()
         //_responseData = Data(count: Int(response.expectedContentLength))
@@ -576,7 +576,7 @@ extension XMLHttpRequest: URLSessionDataDelegate {
     //}
 
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
+        //print("XMLHttpRequest urlSession( session: URLSession, dataTask: \(dataTask), didReceive: \(data) )")
 
         _responseData?.append(data)
 
