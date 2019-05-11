@@ -9,6 +9,7 @@
 import Foundation
 import JavaScriptCore
 
+/*
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/Node
 @objc public protocol NodeJSProtocol: JSExport, EventTargetJSProtocol {
     var baseURI: String? { get }
@@ -152,3 +153,4 @@ import JavaScriptCore
     }
 
 }
+*/

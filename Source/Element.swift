@@ -9,6 +9,7 @@
 import Foundation
 import JavaScriptCore
 
+/*
 // SPEC: https://developer.mozilla.org/en-US/docs/Web/API/Node
 @objc public protocol ElementJSProtocol: JSExport, NodeJSProtocol {
     var attributes: JSValue { get }
@@ -70,3 +71,4 @@ import JavaScriptCore
 @objc public class Element: Node, ElementJSProtocol {
     
 }
+*/
