@@ -60,7 +60,6 @@ public extension JSValue {
         var retVal = call(withArguments: arguments)!
         if retVal.isPromise {
             let fulfilledHandler: @convention(block) (JSValue?) -> Void = { value in
-                print("fulfilling callAsync() with resolved: \(String(describing: value))")
                 completionHandler(value, nil)
             }
             let rejectedHandler: @convention(block) (JSValue?/*Error*/) -> Void = { error in
@@ -69,7 +68,6 @@ public extension JSValue {
             //retVal = retVal.invokeMethod("then", withArguments: [ fulfilledHandler, rejectedHandler ])
             retVal = retVal.invokeMethod("then", withArguments: [ JSValue(object: fulfilledHandler, in: context), JSValue(object: rejectedHandler, in: context) ])
         } else {
-            print("fulfilling callAsync() with non-promise: \(String(describing: retVal))")
             completionHandler(retVal, nil)
         }
         return retVal
